@@ -1,17 +1,25 @@
 import React from 'react';
-import { app } from './firebase';
-//import { useAppDispatch, useAppSelector } from './Store/hooks';
-//import { increment, decrement } from './Store/counterSlice';
-import NavBar from './Component/navbar';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './Pages/home';
+import Pick from './Pages/pick';
+import Drop from './Pages/drop';
+
+
 
 const  App:React.FC = () => {
  // const count = useAppSelector(state => state.counter.value);
  // const dispatch = useAppDispatch();
- console.log(app);
+ //console.log(app);
+
   return (
-    <div className="App">
-      <NavBar/>
-      <h2 className="text-3xl font-bold">Hello Typescript</h2>
+    <div>
+      <Router>
+          <Switch>
+            <Route exact path = "/" component={Home}/>
+            <Route exact path = "/pick" component={Pick}/>
+            <Route exact path = "/drop" component = {Drop}/>
+          </Switch>
+    </Router>
     </div>
   );
 }
