@@ -1,18 +1,31 @@
-import React from "react";
+import React,{useRef, useEffect} from "react";
+import GreetUser from "../account";
 import { Menu, List } from "../styles";
 
+interface Props {
+  showAccount: boolean;
+  setShowAccount: (value: boolean) => void;
+}
 
-
-const Account:React.FC = () => {
-  const  GreetUser = () => (
-    <div className="font-sans text-2xl font-medium px-3 py-3">
-      Hey, Oluka
-    </div>
-  )
+const Account:React.FC<Props> = ({showAccount, setShowAccount}) => {
+  
+  const container = useRef<HTMLDivElement>(null);
+  const handleClick = (e:any) => {
+    if(container.current && !container.current.contains(e.target)){
+      setShowAccount(false);
+    }   
+   }
+   useEffect(() => {
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    }
+   })
 
   
+  
 	return (
-		<Menu className="absolute top-10% right-3 xl:right-14">
+		<Menu className="absolute top-10% right-3 xl:right-14"  ref = {container}>
       <div>
         <GreetUser />
       </div>

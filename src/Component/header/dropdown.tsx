@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Menu, List } from "../styles";
 
 interface List {
@@ -31,17 +31,19 @@ const Dropdown:React.FC<Props> = ({
    
   const myPosition = ():any => {
     if(title === 'Ride'){
-      return position( '10%', '15%');
+      return position( '6.5%', '15%');
     }else if(title === 'Drive'){
-      return position( '10%', '20%');
+      return position( '6.5%', '20%');
     }else if(title === 'More'){
-      return position( '10%', '25%');  
+      return position( '6.5%', '25%');  
     }
   }
     
+  
 
 	return (
-    <Menu style={myPosition()}>
+    <Menu 
+    style={myPosition()}>
 		  <ul className="lists">
         <List>
             <a href = {firstList.link}>

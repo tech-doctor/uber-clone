@@ -1,5 +1,4 @@
 import React from "react";
-import Dropdown from "./dropdown";
 
 interface Props {
   showRide: boolean;
@@ -12,9 +11,13 @@ interface Props {
   setShowAccount: (value: boolean) => void;
 }
 
+
 const MenuBar: React.FC<Props> = ({showRide, setShowRide, showDrive, setShowDrive, showMore, setShowMore, showAccount, setShowAccount}) => {
+
+
+
   return(
-     <nav className="nav_bar bg-black text-white p-3 px-2 md:px-10 lg:px-12 xl:px-[85px] 2xl:px-[130px]">
+     <nav className="nav_bar bg-black text-white p-0 px-5 md:px-10 lg:px-12 xl:px-[85px] 2xl:px-[130px]">
      <div className="nav_bar_container flex items-center justify-between px-2 md:px-10 lg:px-12">
       <ul className="nav_left flex items-center ">
         <li className="nav_bar_logo mr-14  cursor-pointer">
@@ -22,22 +25,23 @@ const MenuBar: React.FC<Props> = ({showRide, setShowRide, showDrive, setShowDriv
             <div className='font-sans text-2xl font-normal'>Uber</div>
           </a>
         </li>
-        <li className="left_nav_bar_item text-lg">
-          <button onMouseEnter={() => {setShowRide(true)}}
-          onMouseLeave = {() => {setShowRide(false)}}
-           className="ride font-san font-medium">Ride</button>
+        <li className="left_nav_bar_item text-lg ">
+          <button
+           onMouseOver={() => {setShowRide(true)}}
+           onMouseLeave = {() => {setShowRide(false)}}
+           className="ride font-san font-medium py-3">Ride</button>
         </li>
-        <li className="left_nav_bar_item ml-6 text-lg">
+        <li className="  left_nav_bar_item ml-6 text-lg py-3">
           <button 
-          onMouseEnter={() => {setShowDrive(true)}}
+          onMouseOver={() => {setShowDrive(true)}}
           onMouseLeave = {() => {setShowDrive(false)}}
           className="drive font-medium">Drive</button>
         </li>
         <li className="left_nav_bar_item ml-6 text-lg">
           <button 
-          onMouseEnter={() => {setShowMore(true)}}
+          onMouseOver={() => {setShowMore(true)}}
           onMouseLeave = {() => {setShowMore(false)}}
-          className="more font-medium">More</button>
+          className="more font-medium py-3">More</button>
         </li>
       </ul>
       <ul className="nav_right flex items-center">
@@ -48,9 +52,8 @@ const MenuBar: React.FC<Props> = ({showRide, setShowRide, showDrive, setShowDriv
         </li>
         <li className="Acc_name ml-6 text-lg">
           <button 
-          onMouseEnter={() => {setShowAccount(true)}}
-          onMouseLeave = {() => {setShowAccount(false)}}
-          className='font-medium'>Oluka</button>
+          onClick={() => {setShowAccount(true)}}
+          className='font-medium py-3'>Oluka</button>
         </li>
       </ul>  
     </div>

@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
-import Account from './account';
+import React, {useState, useRef ,useEffect} from 'react';
+import Account from './accountDetails';
 import Dropdown from './dropdown';
 import MenuBar from './menubar';
+import MobileHeader from './mobile';
 
 const Header:React.FC = ()=> {
   interface position {
@@ -21,11 +22,31 @@ const Header:React.FC = ()=> {
   const [showRide, setShowRide] = useState<boolean>(false);
   const [showDrive, setShowDrive] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
-  const [showAccount, setShowAccount] = useState<boolean>(true);
+  const [showAccount, setShowAccount] = useState<boolean>(false);
+  
 
+    // const handleClick = (e:any, container) => {
+    //   if(container.current && !container.current.contains(e.target)){
+    //     if(showRide){
+    //       setShowRide(false);
+    //     }
+    //     if(showDrive){
+    //       setShowDrive(false);
+    //     }
+    //     if(showMore){
+    //       setShowMore(false);
+    //     }
+    //     if(showAccount){
+    //       setShowAccount(false);
+    //     }
+    //   }
+    // }
+  
+      
 
   return (
-    <div className='hidde md:block '>
+    <div>
+      <div className='hidden md:block'>
       <MenuBar
       showRide={showRide}
       setShowRide={setShowRide}
@@ -70,8 +91,15 @@ const Header:React.FC = ()=> {
         fifthList = {{name: "Uber Health", link: "https://www.uberhealth.com/"}}
       />: '' }
       {showAccount? 
-      <Account/>:''}
+      <Account
+      showAccount={showAccount}
+      setShowAccount={setShowAccount}/>:''}
     </div>
+    <div className='block md:hidden'>
+      <MobileHeader/>
+    </div>
+    </div>
+    
     
   )
 }
