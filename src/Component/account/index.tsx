@@ -5,5 +5,4 @@ const  GreetUser:React.FC = () => (
       Hey, Oluka
     </div>
   )
-
-    export default GreetUser;
+export default GreetUser;

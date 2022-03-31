@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import GreetUser from "../../account";
-import { SideBar,List } from "../../styles";
+import { SideBar,List } from "../../styles/header";
 
 interface Props {
   showSideBar: boolean;

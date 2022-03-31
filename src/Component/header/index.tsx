@@ -46,7 +46,7 @@ const Header:React.FC = ()=> {
 
   return (
     <div>
-      <div className='hidden md:block'>
+      <div className='hidden sm:block'>
       <MenuBar
       showRide={showRide}
       setShowRide={setShowRide}

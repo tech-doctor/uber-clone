@@ -4,7 +4,9 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
     darkMode: false, // or 'media' or 'class'
     theme: {
-      extend: {colors: {
+      extend: {
+        colors: {
+         'light-gray': "rgb(240, 240, 240)", 
         transparent: "transparent",
         current: "currentColor",
         primary: {
@@ -19,6 +21,7 @@ module.exports = {
           dark: "#26221D"
         }
       }
+      
     },
     //   colors: {
     //   transparent: 'transparent',

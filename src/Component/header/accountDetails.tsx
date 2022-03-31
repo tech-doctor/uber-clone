@@ -1,6 +1,6 @@
 import React,{useRef, useEffect} from "react";
 import GreetUser from "../account";
-import { Menu, List } from "../styles";
+import { Menu, List } from "../styles/header";
 
 interface Props {
   showAccount: boolean;

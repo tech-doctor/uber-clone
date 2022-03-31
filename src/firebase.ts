@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 
-const FIREBASE_API_KEY = process.env.REACT_APP_FIREBASE_API_KEY;
+const FIREBASE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
 const firebaseConfig = {
   apiKey: `${FIREBASE_API_KEY}`,
