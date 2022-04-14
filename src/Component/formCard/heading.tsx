@@ -1,9 +1,13 @@
 import React from "react";
 
-const FormHeading:React.FC = () => {
+interface Props {
+  heading: string;
+}
+
+const FormHeading:React.FC<Props> = ({heading}) => {
   return(
-    <div className="hidden sm:block font-sans text-4xl font-medium px-3 py-3">
-      Where can we pick you up?
+    <div className={`hidden sm:block font-[UberMove, UberMoveText, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif] text-4xl font-medium px-3 py-3`}>
+      {heading}
     </div>
   )
 }

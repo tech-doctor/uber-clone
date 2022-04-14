@@ -7,10 +7,6 @@ import Drop from './Pages/drop';
 
 
 const  App:React.FC = () => {
- // const count = useAppSelector(state => state.counter.value);
- // const dispatch = useAppDispatch();
- //console.log(app);
-
   return (
     <div>
       <Router>

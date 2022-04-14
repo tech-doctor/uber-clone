@@ -1,12 +1,61 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState,  useEffect, useRef} from "react";
+import {useLocation} from "react-router-dom";
+import axios from "axios";
 import Suggestions from "./suggestion";
+import { useAppDispatch, useAppSelector } from "../../Store/hooks";
+import { updatePickup,updateDestination } from "../../Store/slice";
 
-const FormInput:React.FC = () => {
+const FormInput:React.FC = ({children}) => {
   const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
-   
+  const dispatch = useAppDispatch();
+  const currentRoute = useLocation();
+
+  const pickup = useAppSelector(state => state.root.pickup.value);
+  const destination = useAppSelector(state => state.root.destination.value);
+  const isPickupDisable = useAppSelector(state => state.root.pickup.disabled);
+  const isDestinationDisable = useAppSelector(state => state.root.destination.disabled);
+
+  const [suggestions, setSuggestions] = useState([]);
+  const pickupRef = useRef<any>();
+  const destinationRef = useRef<any>();
 
 
+  const fetchPredictions = (input:string) => {
+    const proxy = "https://mighty-island-92084.herokuapp.com/"
+    axios(` ${proxy}https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&types=address&components=country:ng|country:fr|country:us&key=${GOOGLE_API_KEY}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then( async res => {
+      try {
+        const result = await res.data;
+        console.log(result.predictions);
+        setSuggestions(result.predictions);
 
+      }catch (error) {
+        console.log(error);
+      }
+    })
+  }
+
+
+  const handlePickupInput = (e:any) => {
+    dispatch(updatePickup(e.target.value));
+    if(pickup.length > 1) {
+    fetchPredictions(pickup)
+    }   
+  }
+
+  const handleDestinationInput = (e:any) => {
+     dispatch(updateDestination(e.target.value));
+     if(destination.length > 1) {
+     fetchPredictions(destination)
+     }
+  }
+
+  
   return(
     <div>
       <div className="input_fields relative">
@@ -16,16 +65,25 @@ const FormInput:React.FC = () => {
           <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"><title>Square small</title><path fillRule="evenodd" clipRule="evenodd" d="M14 10h-4v4h4v-4zM7 7v10h10V7H7z" fill="currentColor"></path></svg>
         </div>
         <div className="input_field">
-          <input 
-          className="w-full my-2  py-3 pl-14 border-none focus:ring-2  focus:ring-black bg-light-gray"
+          <input
+          ref={pickupRef}
+          value={pickup}
+          onChange={handlePickupInput}
+          className="w-full  my-2  py-3 pl-14 border-none focus:ring-2  focus:ring-black bg-light-gray"
           type = 'search' 
           placeholder = 'Add pickup location'
+          disabled = {isPickupDisable}
+          
           />
            <br/> 
           <input 
+          ref={destinationRef}
+          value={destination}
+          onChange={handleDestinationInput}
           className="w-full my-2 py-3 pl-14 border-none focus:ring-2  focus:ring-black bg-light-gray"
           type = 'search' 
           placeholder = 'Enter your destination'
+          disabled = {isDestinationDisable}
           />
         </div>
       </div>
@@ -38,9 +96,19 @@ const FormInput:React.FC = () => {
           Leave Now
         </div>
       </div>
+      {/* <div>
+        {children}
+      </div> */}
       <div>
-        <Suggestions/>
+        {suggestions.map((data,i) => (
+          <Suggestions 
+            pickupRef={pickupRef}
+            destinationRef={destinationRef}
+            key={i} 
+            suggestions={data}
+          />))}
       </div>
+       
     </div>
   )
 }
@@ -48,56 +116,3 @@ const FormInput:React.FC = () => {
 
 
 export default FormInput;
-
-
-
-
-//  const [query, setQuery] = useState('');
-//   const autocompleteRef: React.MutableRefObject<any> = useRef(null);
-
-
-//   let autoComplete; 
-//  const loadScript = (url, callback) => {
-//    let script:any = document.createElement('script');
-//    script.type = 'text/javascript';
-//    if(script.readyState) {
-//      script.onreadystatechange = () => {
-//        if(script.readyState === 'loaded' || script.readyState === 'complete') {
-//          script.onreadystatechange = null;
-//          callback();
-//        }
-//      };
-//    }else{
-//      script.onload = () => {
-//        callback();
-//      }
-//    }
-//    script.src = url;
-//    document.getElementsByTagName('head')[0].appendChild(script);
-//  }
-
-//  const handleScriptLoad = (updateQuery, autoCompleteRef) => {
-//     autoComplete = new window.google.maps.places.Autocomplete(autocompleteRef.current, {
-//      types: ['address'], componentRestrictions: {country: 'ng'}
-//    });
-//    autoComplete.setFields(['address_component', 'formatted_address']);
-//    autoComplete.addListener('place_changed', () => {
-//      handlePlaceSelect(updateQuery);
-//    });
-//  }
-
-//  const handlePlaceSelect = (updateQuery) => {
-//    const addressObject = autoComplete.getPlace();
-//    const query = addressObject.formatted_address;
-//    // const latitude = addressObject.geometry.location.lat();
-//    // const longitude = addressObject.geometry.location.lng();
-//    // updateQuery(query, latitude, longitude);
-//    updateQuery(addressObject);
-//    console.log(addressObject);
-
-//  }
-
-//  useEffect(() => {
-//    loadScript(`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`
-//    , () => handleScriptLoad(setQuery, autocompleteRef));
-//  }, [autocompleteRef]);
