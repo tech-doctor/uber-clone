@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 
 const FIREBASE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
-
 const firebaseConfig = {
   apiKey: `${FIREBASE_API_KEY}`,
   authDomain: "uber-clone-bd051.firebaseapp.com",

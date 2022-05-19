@@ -12,4 +12,4 @@ const FormHeading:React.FC<Props> = ({heading}) => {
   )
 }
 
-export default FormHeading;
+export default React.memo(FormHeading);

@@ -15,18 +15,19 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
     }
 }
 
-const initialState: initialState = {
+const initialState:initialState = {
     mapInitialPosition: {
       lat: 6.5224,
       lng: 3.3792
     },
     pickup: {
       value: '',
-      disabled: false
+      disabled: false,
+      
     },
     destination: {
-        value: '',
-        disabled: false
+      value: '',
+      disabled: false,
     }
 
     
@@ -36,9 +37,9 @@ export const slice = createSlice ({
     name: 'slice',
     initialState,
     reducers: {
-      updateInitialPosition: (state, action:  PayloadAction<{lat: number, lng: number}>) => {
-        state.mapInitialPosition = action.payload;
-      },
+      // updateInitialPosition: (state, action:  PayloadAction<{lat: number, lng: number}>) => {
+      //   state.mapInitialPosition = action.payload;
+      // },
       updatePickup: (state, action: PayloadAction<string>) => {
         state.pickup.value = action.payload;
       }, updateDestination: (state, action: PayloadAction<string>) => {
@@ -54,6 +55,6 @@ export const slice = createSlice ({
 })
 
 
-export const {updateInitialPosition, updatePickup, updateDestination, updatePickupDisable, updateDestinationDisable} = slice.actions;
+export const { updatePickup, updateDestination, updatePickupDisable, updateDestinationDisable} = slice.actions;
 
 export default slice.reducer;

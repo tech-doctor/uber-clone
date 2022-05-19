@@ -1,4 +1,5 @@
-import React, {useState, useRef ,useEffect} from 'react';
+import React, {useState,useEffect} from 'react';
+import { CloseSVG } from '../const/svg';
 import Account from './accountDetails';
 import Dropdown from './dropdown';
 import MenuBar from './menubar';
@@ -23,6 +24,37 @@ const Header:React.FC = ()=> {
   const [showDrive, setShowDrive] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [showAccount, setShowAccount] = useState<boolean>(false);
+
+
+ // const [netWorksuccess, setNetworkSuccess] = useState<boolean>(false);
+  const [networkError, setNetworkError] = useState<boolean>(false);
+
+  useEffect(() => {
+    const time =  setInterval( async() => {
+      try {
+        const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+        if (online?.status === 200) {
+          //setNetworkSuccess(true);
+          setNetworkError(false);
+        } else {
+          setNetworkError(true);
+        }
+      } 
+      catch (error) {
+        console.log(error);
+        setNetworkError(true);
+      }
+    },2000)
+
+    return () => {
+      clearInterval(time);
+    }
+  })
+
+  
+
+
+
   
 
     // const handleClick = (e:any, container) => {
@@ -46,6 +78,13 @@ const Header:React.FC = ()=> {
 
   return (
     <div>
+      {networkError?
+       <div className='bg-red-500 flex justify-between py-4 px-3 text-white w-[250px]  rounded-lg absolute top-5 left-5 z-10'>
+        <p className='text-[16px]'>Unable to reach network</p>
+        <div className=''>
+          <CloseSVG/>
+        </div>  
+      </div>: null }
       <div className='hidden sm:block'>
       <MenuBar
       showRide={showRide}

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 
 interface Props {
   carLink: string;
@@ -7,9 +7,10 @@ interface Props {
   extraDetails?: string;
   duration: string;
   time: string;
+  multiplier: number;
   showSeater: boolean;
-  handleSelect: any;
-  doubleClick: any;
+  handleSelect:any;
+
 }
 
 const Category:React.FC<Props> = ({
@@ -20,17 +21,18 @@ const Category:React.FC<Props> = ({
   duration,
   time,
   showSeater,
+  multiplier,
   handleSelect,
-  doubleClick
 }) => {
+
   return (
     <div
-     onClick = {() => handleSelect(name)}
-     onDoubleClick = {() => doubleClick({name,price, duration, time, extraDetails, showSeater})}
-     className="flex items-center w-full cursor-pointer rounded-lg border-gray-300  hover:border-2 border-solid mt-3  py-6">
+    // onClick = {() => handleSelect(name)}
+     onClick = {() => handleSelect(name, duration, time, extraDetails, multiplier, showSeater)}
+     className="flex   items-center w-full cursor-pointer rounded-lg border-gray-300  hover:border-2 border-solid mt-3  py-6">
       <div className="left px-3">
         <div className="car_image">
-          <img height="88" width="88" src={carLink}></img>
+          <img alt="car" height="88" width="88" src={carLink}></img>
         </div>
       </div>
       <div className="right w-full px-3 leadin-2 sm:leading-[10px]">
@@ -41,10 +43,12 @@ const Category:React.FC<Props> = ({
             
             {showSeater && <span className="text-sm">4</span>}  
           </div>
-          <h4 className="font-medium text-md sm:text-lg">{price}</h4>
+           <h4 className="font-medium text-md sm:text-lg">
+            {price}
+            </h4>
         </div>
         <div className="details">
-          {extraDetails && <span className="text-sm text-black">{extraDetails}<br></br></span>}
+          {extraDetails  && <span className="text-sm text-black">{extraDetails}<br></br></span>}
           <span className="text-sm text-gray-500">{`in ${duration}. ${time} dropoff`}</span>
         </div>
       </div>
@@ -52,4 +56,4 @@ const Category:React.FC<Props> = ({
   );
 }
 
-export default Category;
+export default React.memo(Category);
