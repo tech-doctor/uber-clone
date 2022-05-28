@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useRef,useEffect} from "react";
 import { Menu, List } from "../styles/header";
 
 interface List {
@@ -16,6 +16,12 @@ interface Props {
   fourthList: List;
   fifthList: List;
   sixthList?: List;
+  showRide?: boolean;
+  setShowRide?: (value: boolean) => void;
+  showDrive?: boolean;
+  setShowDrive?: (value: boolean) => void;
+  showMore?: boolean;
+  setShowMore?: (value: boolean) => void;
 }
 
 const Dropdown:React.FC<Props> = ({
@@ -26,9 +32,15 @@ const Dropdown:React.FC<Props> = ({
   thirdList,
   fourthList,
   fifthList,
-  sixthList
+  sixthList,
+  showRide,
+  setShowRide,
+  showDrive,
+  setShowDrive,
+  showMore,
+  setShowMore,
 }) => {
-   
+  //  const [showDropDown, setShowDropDown] = React.useState(false);
   const myPosition = ():any => {
     if(title === 'Ride'){
       return position( '6.5%', '15%');
@@ -38,11 +50,28 @@ const Dropdown:React.FC<Props> = ({
       return position( '6.5%', '25%');  
     }
   }
+
+  const container = useRef<HTMLDivElement>(null);
+  const handleClick = (e:any) => {
+    if(container.current && !container.current.contains(e.target)){
+      setShowRide && setShowRide(false);
+      setShowDrive && setShowDrive(false);
+      setShowMore && setShowMore(false);
+    }   
+   }
+
+   useEffect(() => {
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    }
+  })
     
   
 
 	return (
-    <Menu 
+      <Menu
+    ref={container} 
     style={myPosition()}>
 		  <ul className="lists">
         <List>
@@ -78,7 +107,7 @@ const Dropdown:React.FC<Props> = ({
           </List>
         )} 
 		  </ul>
-    </Menu>
+    </Menu>  
 	)
 }
 

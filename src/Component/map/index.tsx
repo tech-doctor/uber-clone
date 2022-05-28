@@ -1,19 +1,22 @@
 import  React,{useEffect, useCallback, useState} from 'react';
-import  { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer } from '@react-google-maps/api';
-import {useParams} from 'react-router-dom';
+import {useParams, useLocation} from 'react-router-dom';
+import  { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer} from '@react-google-maps/api';
 import { useAppSelector } from '../../Store/hooks';
 import { GOOGLE_API_KEY } from '../const/api';
 import { driversLocations, createKey } from './driversLocation';
-
 import { mapStyle } from './mapStyle';
+import InfoComponent from './infoComponent';
+import path from 'path';
+import Loading from '../Loading';
 
 
 const Map:React.FC = () => {
   const center:{lat:number, lng:number} = useAppSelector(state => state.root.mapInitialPosition);
+  const pickUpCoordinate = useAppSelector(state => state.root.pickup.coordinates);
+  const destinationCoordinate = useAppSelector(state => state.root.destination.coordinates);
   const {origin, end} = useParams();
-  
-  //const pickup:string = useAppSelector(state => state.root.pickup.value);
-  //const destination:string = useAppSelector(state => state.root.destination.value);
+  const {pathname} = useLocation();
+  //console.log(pathname);
 
   const[map, setMap] = useState<any>(null)
   const [state, setState] = useState<any>({
@@ -22,20 +25,15 @@ const Map:React.FC = () => {
   })
   const [directionsResponse, setDirectionsResponse] = useState<any>(null);
   
-  const [duration, setDuration] = useState<any>(null);
-
-  //const [throwError, setThrowError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("something went wrong");
 
  const isPickupDisable:boolean = useAppSelector(state => state.root.pickup.disabled);
  const isDestinationDisable:boolean = useAppSelector(state => state.root.destination.disabled);
 
 
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded,loadError } = useJsApiLoader({
     googleMapsApiKey: `${GOOGLE_API_KEY}`
   }) 
-
-
 
   const calculateRoute = useCallback(async() => {
     if(!isPickupDisable || !isDestinationDisable) {
@@ -56,24 +54,20 @@ const Map:React.FC = () => {
     //  }
       );
       setDirectionsResponse(response);
-      setDuration(response?.routes[0].legs[0].duration.text);
-      console.log(response.routes[0].legs[0].duration.text)
-      console.log(duration);
       if(response.status !== 'OK') {
         throw new Error(response.status);
       } 
     }
     catch(error:any) {
-      // setThrowError(true);
-      // console.log('Error fetching directions', error);
       console.log('from map folder')
+      console.log(error);
       if(error.code === 'NOT_FOUND') {
         setErrorMessage('Route not found. Select another  location route and try again');
       }else {
         setErrorMessage('Something went wrong. Please try again');
       }  
     }
-  },[isDestinationDisable, isPickupDisable, duration, origin, end, state.travelMode]);
+  },[isDestinationDisable, isPickupDisable, origin, end, state.travelMode]);
 
   useEffect(() => {
      //const abortController = new AbortController();
@@ -86,16 +80,27 @@ const Map:React.FC = () => {
       //abortController.abort();
       mounted = false;
     }
-  }, [ calculateRoute])
+  }, [calculateRoute])
  
+const place ='origin'
+
+
 
   if(!isLoaded) {
-    return <div>Loading...</div>
+    if(document.readyState !== 'complete') {
+      return (
+        <div className='bg-white fixed w-full  h-full top-0 z-10'>
+          <Loading/>
+        </div>
+      )
+    }  
   }
 
+    
+  
+
   return (
-    <div className='bg-gray-400  h-[45vh] sm:h-screen w-full'>
-      {/* {throwError && <div className='text-center text-red-500 fixed z-10 '>{errorMessage}</div>} */}
+    <div className={`  h-[50vh] sm:h-screen w-full`}>
       <GoogleMap
           id='map'
           mapContainerStyle={{width: '100%', height: '100%'}}
@@ -106,18 +111,18 @@ const Map:React.FC = () => {
             fullscreenControl: false,
             mapTypeControl: false,
             styles: mapStyle,
+            clickableIcons: false,
           }}
           onLoad={(map) => {
             setMap(map);
-          }}
-         
-          > 
+          }}> 
+           
           <Marker
           position={center}
           options  = {{
             icon: {
-              url: 'https://i.pinimg.com/originals/b4/cf/d5/b4cfd5594462c22d1ca684541117e0a4.png',
-              scaledSize: new google.maps.Size(27, 35), 
+              url: 'https://www.nicepng.com/png/full/101-1015767_map-marker-circle-png.png',
+              scaledSize: new google.maps.Size(60, 60), 
             },  
           }}
           />
@@ -127,23 +132,42 @@ const Map:React.FC = () => {
               options = {{
                 icon: {
                   url: 'https://github.com/EfficientProgramming01/uberClone/blob/master/assets/carMarker.png?raw=true',
-                  scaledSize: new google.maps.Size(40, 18),
+                  scaledSize: new google.maps.Size(35, 18),
                 }
               }}
             />
           ))}
+          {/* {pathname === `/drop/${origin}/${end}`  && 
+          <div>
+            <InfoComponent
+          center = {pickUpCoordinate}
+          place  = {`From ${origin}`}
+           />
+          
+          </div>
+
+           } */}
       {directionsResponse !== null &&
       <div>
-        <Marker 
-        position={directionsResponse.routes[0].legs[0].start_location}
-        options = {{
-          icon: {
-            url: 'https://creazilla-store.fra1.digitaloceanspaces.com/emojis/45166/black-circle-emoji-clipart-xl.png',
-            scaledSize: new google.maps.Size(20, 18),  
-          }
-        }}
+        
+        <Marker
+          position={directionsResponse.routes[0].legs[0].start_location}
+          onLoad={(marker) => {
+            marker.setMap(map);
+          }}
+          // position={pickUpCoordinate}
+          options = {{
+            icon: {
+              url: 'https://www.picng.com/upload/vinyl/png_vinyl_35563.png',
+              scaledSize: new google.maps.Size(18, 18),  
+            }
+           }}
         />
-
+         
+         {/* <InfoComponent
+          center = {destinationCoordinate}
+          place  = {`To ${end}`}
+        /> */}
         <Marker
           position={directionsResponse.routes[0].legs[0].end_location}
           options = {{
@@ -153,7 +177,7 @@ const Map:React.FC = () => {
             }
           }} 
         />
-
+        
         <DirectionsRenderer
           directions={directionsResponse}
           options = {{
@@ -161,9 +185,9 @@ const Map:React.FC = () => {
               strokeColor: 'black',
               strokeWeight: 3,
               strokeOpacity: 1,
-              geodesic: true,
+              geodesic: false,
             },
-            suppressMarkers: true, 
+            suppressMarkers: true,  
           }}      
         />
       </div>

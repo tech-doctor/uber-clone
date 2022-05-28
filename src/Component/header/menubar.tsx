@@ -27,20 +27,30 @@ const MenuBar: React.FC<Props> = ({showRide, setShowRide, showDrive, setShowDriv
         </li>
         <li className="left_nav_bar_item text-lg ">
           <button
-           onMouseOver={() => {setShowRide(true)}}
-           onMouseLeave = {() => {setShowRide(false)}}
+            onMouseEnter={() => {setShowRide(true)
+            setShowDrive(false)
+            setShowMore(false)
+            setShowAccount(false)
+            }
+          }
            className="ride font-san font-medium py-3">Ride</button>
         </li>
         <li className="  left_nav_bar_item ml-6 text-lg py-3">
           <button 
-          onMouseOver={() => {setShowDrive(true)}}
-          onMouseLeave = {() => {setShowDrive(false)}}
+          onMouseEnter={() => {setShowDrive(true)
+          setShowRide(false)
+          setShowMore(false)
+          setShowAccount(false)
+          }}
           className="drive font-medium">Drive</button>
         </li>
         <li className="left_nav_bar_item ml-6 text-lg">
           <button 
-          onMouseOver={() => {setShowMore(true)}}
-          onMouseLeave = {() => {setShowMore(false)}}
+          onMouseEnter={() => {setShowMore(true)
+          setShowRide(false)
+          setShowDrive(false)
+          setShowAccount(false)
+          }}
           className="more font-medium py-3">More</button>
         </li>
       </ul>
@@ -52,7 +62,11 @@ const MenuBar: React.FC<Props> = ({showRide, setShowRide, showDrive, setShowDriv
         </li>
         <li className="Acc_name ml-6 text-lg">
           <button 
-          onClick={() => {setShowAccount(true)}}
+          onMouseEnter={() => {setShowAccount(true)
+          setShowRide(false)
+          setShowDrive(false)
+          setShowMore(false)
+          }}
           className='font-medium py-3'>Oluka</button>
         </li>
       </ul>  

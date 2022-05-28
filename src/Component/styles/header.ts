@@ -20,8 +20,8 @@ export const Menu = styled.div`
   width: fit-content;
   block-size: fit-content;
   margin: 0.5em;
-  animation: ${fadeIn} 0.5s ease-in-out;
-  z-index: 1;
+  animation: ${fadeIn} 0.3s ease-in-out;
+  z-index: 30;
 `
 
 export const List = styled.li`
@@ -36,7 +36,9 @@ export const MobileNav = styled.div`
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding: 0.5em 1.5em;
+  width: 100%;
+  padding: 0.3em 0.8em;
+
 `
 
 
@@ -53,13 +55,13 @@ const sidebarAnimation = keyframes`
 
 export const SideBar= styled.div` 
  width: 100%;
- padding: 1em 1.3em;
+ padding: 1em 0.8em;
  height: 100vh;
  position: absolute;
  top: 0;
  left: 0;
  background-color: white;
- z-index: 1;
+ z-index: 10;
  overflow:hidden;
  animation: ${sidebarAnimation} 0.4s ease-in-out;
 `

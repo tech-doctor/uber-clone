@@ -16,14 +16,14 @@ const  config:object = {
 
 axios(config)
 .then(res => {
-  console.log(res.data);
+  //console.log(res.data);
   for (let i = 0; i < res.data.results.length; i++) {
     driversLocations.push({
       lat: res.data.results[i].geometry.location.lat,
       lng: res.data.results[i].geometry.location.lng
     })
   }
-  console.log(driversLocations);
+  //console.log(driversLocations);
 })
 .catch(function (error) {
   console.log(error);

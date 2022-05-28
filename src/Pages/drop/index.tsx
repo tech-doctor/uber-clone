@@ -10,17 +10,8 @@ import FormCard from "../../Component/formCard";
 import Header from "../../Component/header";
 import Map from "../../Component/map";
 import Category from "./category";
+import ErrorFallback from "../../Component/ErrorFallBack";
 
-
-function ErrorFallback({error, resetErrorBoundary}) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <button onClick={resetErrorBoundary}>Try again</button>
-    </div>
-  )
-}
 
 
 const Drop:React.FC = () => {
@@ -32,8 +23,10 @@ const Drop:React.FC = () => {
   const [throwError, setThrowError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("something went wrong");
   
-  const categories = useMemo(() => {
-    return [
+  const categories = 
+  // useMemo(() => {
+   // return 
+    [
       {
         id: 1,
         carLink: "https://d1a3f4spazzrp4.cloudfront.net/car-types/haloProductImages/v1.1/UberX_Hourly.png",
@@ -54,7 +47,7 @@ const Drop:React.FC = () => {
         showSeater: true,
       }
     ]
-  },[travelInfo, time])as any;
+  // },[travelInfo, time])as any;
 
   const tripPrice:any = useCallback((multiplier:number) =>{
     const SURGE_FACTOR = 1.5;
@@ -66,7 +59,9 @@ const Drop:React.FC = () => {
   }, [travelInfo])
 
 
+  
 
+  console.log(window.performance.navigation);
 
   useEffect(() => {
     let mounted = true;
@@ -91,26 +86,19 @@ const Drop:React.FC = () => {
         const {data} = await response;
         const result = data.rows[0].elements[0];
         console.log(result.status)
-        setTravelInfo(result);   
-        if(result.status !== 'OK') {
-          setThrowError(true);
-          console.log(throwError)
-          //setErrorMessage(result.status);  
-        }       
+        setTravelInfo(result);    
       }
 
       catch (error:any)  {
-        console.log('from Drop folder')
-      console.log(throwError)
         if(error.name === "AbortError") {
           console.log("Request Aborted");
         }else{
           console.log(error);
+          console.log('hello hello')
         }
       }
     });
-
-    }
+   }
     
     
     return () => {
@@ -122,7 +110,7 @@ const Drop:React.FC = () => {
       dispatch(updatePickupDisable(false));
       dispatch(updatePickup(""));
     } 
-  },[ dispatch, origin, end,throwError]);
+  },[ dispatch, origin, end,]);
 
 
   
@@ -142,19 +130,10 @@ const Drop:React.FC = () => {
     const date = new Date(moment().add(minutes, 'm').format());
     const  dt = date.getTime();
     let time = new Date(dt).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
-    console.log(time);
     setTime(time);   
   }
 
   arrivalTime();
-  
-
- 
-  // const handleSelect = useCallback((name:string) => {  
-  //   setDetails({name});  
-  //   console.log('single');
-  // },[details.name]);
-
 
   const handleSelect = useCallback ((name:string, duration:string, time:string, extraDetails:string, multiplier:number, showSeater:boolean) => {
     setDetails({name, duration, time, extraDetails, multiplier, showSeater});
@@ -163,16 +142,10 @@ const Drop:React.FC = () => {
    
   },[]);
 
-
-  // if(throwError) {
-  //   return <div>{errorMessage}</div>
-  // }
-
   
 
   return (
     <div>
-      {throwError && <div>{errorMessage}</div>}
       <Header/>
       <ErrorBoundary
         FallbackComponent={ErrorFallback}   

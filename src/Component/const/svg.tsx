@@ -66,3 +66,12 @@ export const  GearSVG = () => {
   )
 }
 
+
+export const RightAngleSVG = () => {
+  return(
+    <div className="cursor-grab">
+        <svg width="1em" height="1em" viewBox="0 0 24 24" focusable="true" className="dyAbMb font-bold "><path d="M0 0h24v24H0z" fill="none"></path><path d="M8.59,16.59L13.17,12L8.59,7.41L10,6l6,6l-6,6L8.59,16.59z"></path></svg>
+    </div>
+   
+  )
+}

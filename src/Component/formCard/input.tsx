@@ -4,7 +4,7 @@ import axios from "axios";
 import { GOOGLE_API_KEY } from "../const/api";
 import { CenterSVG, ClockSVG, SmallCircleSVG, SmallSquareSVG } from "../const/svg";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import { updatePickup,updateDestination, updatePickupDisable} from "../../Store/slice";
+import { updatePickupCoordinates, updatePickup,updateDestination, updatePickupDisable} from "../../Store/slice";
 import  { useGetAddressQuery } from "../../Service/address";
 import Suggestions from "./suggestion";
 
@@ -15,9 +15,7 @@ interface Props {
 const FormInput:React.FC<Props> = ({toggleBottomSheet}) => {
   const dispatch = useAppDispatch();
   const currentRoute = useLocation();
-  //console.log(currentRoute);
   const history = useHistory();
-  //console.log(history)
 
   const pickup:string = useAppSelector(state => state.root.pickup.value);
   const destination:string = useAppSelector(state => state.root.destination.value);
@@ -31,6 +29,7 @@ const FormInput:React.FC<Props> = ({toggleBottomSheet}) => {
   const [currentCordinate, setCurrentCordinate] = useState({lat: 0, lng: 0});
 
   const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(currentCordinate); 
+
 
 
   const fetchPredictions = (input:string) => {
@@ -48,6 +47,26 @@ const FormInput:React.FC<Props> = ({toggleBottomSheet}) => {
         setSuggestions(result.predictions);
         setIsLoading(false);
       }catch (error) {
+        console.log(error);
+      }
+    })
+  }
+
+  function getCoordinate(address:string, update:any) {
+    const proxy = "https://mighty-island-92084.herokuapp.com/"
+    axios(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_API_KEY}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(async res => {
+      try {
+        const result = await res.data;
+        const position = result.results[0].geometry.location;   
+          dispatch(update(position));  
+      }
+      catch (error) {
         console.log(error);
       }
     })
@@ -96,7 +115,7 @@ const FormInput:React.FC<Props> = ({toggleBottomSheet}) => {
   const handleClick  = (e:any) => {
     e.preventDefault();
     const currentLocation = data.results[0]?.address_components[1].long_name;
-    //getCoordinate(description);
+    getCoordinate(currentLocation, updatePickupCoordinates);
     dispatch(updatePickup(currentLocation));
     dispatch(updatePickupDisable(true));
     history.push(`/pick/${currentLocation}`);
@@ -145,19 +164,19 @@ const FormInput:React.FC<Props> = ({toggleBottomSheet}) => {
         <div className="leave-time">
           <ClockSVG/>
         </div>
-        <div className="ml-2 font-medium">
+        <div className="ml-2 font-medium text-[16px] sm:text-md">
           Leave Now
         </div>
       </div>
 
-      <div>
+      <div className="text-[16px] sm:text-md">
         {!isLoading && suggestions.length <= 0 && currentRoute.pathname === "/"?
-            <div className="my-5">
+            <div className="my-5 ">
             <div onClick={handleClick}  className="each_suggestion flex items-center my-3 cursor-pointer">
               <div className="icon  p-2.5 bg-black rounded-full mb-3">
                <CenterSVG/>
               </div>
-              <div className=" font-san leading-tight text ml-4 border-solid border-b border-gray-200 w-full tracking-tight pb-3">
+              <div className=" font-san leading-tight  ml-4 border-solid border-b border-gray-200 w-full tracking-tight pb-3">
                 {isFetching &&<span className="font-medium leading-tight">Fetching...</span>}
                 {isSuccess && <span className="font-medium leading-tight">{data.results[0]?.address_components[1].long_name}</span>}
                 <br/>
@@ -172,6 +191,7 @@ const FormInput:React.FC<Props> = ({toggleBottomSheet}) => {
             destinationRef={destinationRef}
             key={i} 
             suggestions={data}
+            getCoordinate={getCoordinate}
           />))}
       </div>  
     </div>

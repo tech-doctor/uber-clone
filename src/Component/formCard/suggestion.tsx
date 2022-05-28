@@ -1,9 +1,9 @@
 import React from "react";
 import {useLocation, useHistory, useParams} from "react-router-dom";
-//import axios from "axios";
+import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import {updatePickupDisable, updateDestinationDisable} from "../../Store/slice";
-//import { GOOGLE_API_KEY } from "../const/api";
+import { updatePickupCoordinates, updateDestinationCoordinates, updatePickupDisable, updateDestinationDisable} from "../../Store/slice";
+import { GOOGLE_API_KEY } from "../const/api";
 import { LocationSVG } from "../const/svg";
 
 interface Texts {
@@ -16,42 +16,21 @@ interface  Props{
   suggestions : Texts;
   pickupRef: any;
   destinationRef: any;
+  getCoordinate: (address:string, update:any) => void;
 }
 
-const Suggestions1:React.FC<Props> =  ({suggestions, pickupRef, destinationRef}) => {
+const Suggestions1:React.FC<Props> =  ({suggestions, getCoordinate, pickupRef, destinationRef}) => {
   const dispatch = useAppDispatch();
- // const currentRoute = useLocation();
   const history = useHistory();
-  //const params = useParams();
+
 
   const pickup:string = useAppSelector(state => state.root.pickup.value);
   const isPickupDisable = useAppSelector(state => state.root.pickup.disabled);
-  //const isDestinationDisable = useAppSelector(state => state.root.destination.disabled);
-
 
   const {main_text, secondary_text} = suggestions.structured_formatting;
-  //const description = `${main_text}, ${secondary_text}`;
  
   
-  // function getCoordinate(address:string) {
-  //   const proxy = "https://mighty-island-92084.herokuapp.com/"
-  //   axios(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_API_KEY}`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     }
-  //   })
-  //   .then(async res => {
-  //     try {
-  //       const result = await res.data;
-  //       const position = result.results[0].geometry.location;   
-  //         dispatch(updatePickupCoordinates(position));  
-  //     }
-  //     catch (error) {
-  //       console.log(error);
-  //     }
-  //   })
-  // }
+  
   
 
   
@@ -59,11 +38,11 @@ const Suggestions1:React.FC<Props> =  ({suggestions, pickupRef, destinationRef})
     e.preventDefault();
     if(isPickupDisable !== true ){
       dispatch(updatePickupDisable(true));
-      //getCoordinate(main_text);
+      getCoordinate(main_text, updatePickupCoordinates);
       history.push(`/pick/${main_text}`);
     }else{ 
       dispatch(updateDestinationDisable(true));
-      //getCoordinate(main_text);
+      getCoordinate(main_text, updateDestinationCoordinates);
       history.push(`/drop/${pickup}/${main_text}`);
     }
   }

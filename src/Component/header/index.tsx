@@ -25,8 +25,6 @@ const Header:React.FC = ()=> {
   const [showMore, setShowMore] = useState<boolean>(false);
   const [showAccount, setShowAccount] = useState<boolean>(false);
 
-
- // const [netWorksuccess, setNetworkSuccess] = useState<boolean>(false);
   const [networkError, setNetworkError] = useState<boolean>(false);
 
   useEffect(() => {
@@ -34,7 +32,6 @@ const Header:React.FC = ()=> {
       try {
         const online = await fetch("https://jsonplaceholder.typicode.com/todos/1");
         if (online?.status === 200) {
-          //setNetworkSuccess(true);
           setNetworkError(false);
         } else {
           setNetworkError(true);
@@ -50,38 +47,17 @@ const Header:React.FC = ()=> {
       clearInterval(time);
     }
   })
-
-  
-
-
-
-  
-
-    // const handleClick = (e:any, container) => {
-    //   if(container.current && !container.current.contains(e.target)){
-    //     if(showRide){
-    //       setShowRide(false);
-    //     }
-    //     if(showDrive){
-    //       setShowDrive(false);
-    //     }
-    //     if(showMore){
-    //       setShowMore(false);
-    //     }
-    //     if(showAccount){
-    //       setShowAccount(false);
-    //     }
-    //   }
-    // }
   
       
 
   return (
     <div>
       {networkError?
-       <div className='bg-red-500 flex justify-between py-4 px-3 text-white w-[250px]  rounded-lg absolute top-5 left-5 z-10'>
+       <div className='bg-red-500 flex z-20 justify-between py-4 px-3 text-white w-[250px]  rounded-lg absolute top-5 left-5'>
         <p className='text-[16px]'>Unable to reach network</p>
-        <div className=''>
+        <div 
+        onClick={() => setNetworkError(!networkError)}
+        className='w-fit h-fit'>
           <CloseSVG/>
         </div>  
       </div>: null }
@@ -105,6 +81,8 @@ const Header:React.FC = ()=> {
         thirdList = {{name: "Cities", link: "https://www.uber.com/cities"}}
         fourthList = {{name: "Airports", link: "https://www.uber.com/airports"}}
         fifthList = {{name: "Business", link: "https://www.uber.com/business"}}
+        showRide = {showRide}
+        setShowRide = {setShowRide}
       />: '' }
       
       {showDrive? <Dropdown
@@ -117,6 +95,8 @@ const Header:React.FC = ()=> {
         fourthList = {{name: "Insurance", link: "https://www.uber.com/drive/insurance"}}
         fifthList = {{name: "Rewards", link: "https://www.uber.com/drive/rewards"}}
         sixthList = {{name: "Delivery", link: "https://www.uber.com/drive/delivery"}}
+        showDrive={showDrive}
+        setShowDrive={setShowDrive}
       />: ''}
 
       {showMore? <Dropdown
@@ -128,18 +108,18 @@ const Header:React.FC = ()=> {
         thirdList = {{name: "Delivery", link: "https://www.uber.com/drive/delivery"}}
         fourthList = {{name: "Uber Freight", link: "https://freight.uber.com/"}}
         fifthList = {{name: "Uber Health", link: "https://www.uberhealth.com/"}}
+        showMore={showMore}
+        setShowMore={setShowMore}
       />: '' }
       {showAccount? 
       <Account
       showAccount={showAccount}
       setShowAccount={setShowAccount}/>:''}
     </div>
-    <div className='block md:hidden'>
+    <div className='block md:hidden bg-transparent'>
       <MobileHeader/>
     </div>
-    </div>
-    
-    
+    </div>  
   )
 }
 
