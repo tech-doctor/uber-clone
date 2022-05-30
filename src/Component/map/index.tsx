@@ -16,7 +16,6 @@ const Map:React.FC = () => {
   const destinationCoordinate = useAppSelector(state => state.root.destination.coordinates);
   const {origin, end} = useParams();
   const {pathname} = useLocation();
-  //console.log(pathname);
 
   const[map, setMap] = useState<any>(null)
   const [state, setState] = useState<any>({
@@ -89,7 +88,7 @@ const place ='origin'
   if(!isLoaded) {
     if(document.readyState !== 'complete') {
       return (
-        <div className='bg-white fixed w-full  h-full top-0 z-10'>
+        <div className='bg-white fixed w-full  h-full top-0 z-50'>
           <Loading/>
         </div>
       )
@@ -100,7 +99,7 @@ const place ='origin'
   
 
   return (
-    <div className={`  h-[50vh] sm:h-screen w-full`}>
+    <div className={` bg-gray-300  h-[50vh] sm:h-screen w-full`}>
       <GoogleMap
           id='map'
           mapContainerStyle={{width: '100%', height: '100%'}}

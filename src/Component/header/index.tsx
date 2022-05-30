@@ -5,6 +5,9 @@ import Dropdown from './dropdown';
 import MenuBar from './menubar';
 import MobileHeader from './mobile';
 
+
+
+
 const Header:React.FC = ()=> {
   interface position {
     position: string;
@@ -24,8 +27,8 @@ const Header:React.FC = ()=> {
   const [showDrive, setShowDrive] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const [showAccount, setShowAccount] = useState<boolean>(false);
-
   const [networkError, setNetworkError] = useState<boolean>(false);
+  
 
   useEffect(() => {
     const time =  setInterval( async() => {
@@ -49,7 +52,6 @@ const Header:React.FC = ()=> {
   })
   
       
-
   return (
     <div>
       {networkError?
@@ -123,5 +125,5 @@ const Header:React.FC = ()=> {
   )
 }
 
-  
+
 export default Header;

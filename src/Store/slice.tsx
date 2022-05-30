@@ -1,26 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
- export interface initialState {
-    mapInitialPosition: {
+
+export interface initialState {
+  mapInitialPosition: {
+    lat: number;
+    lng: number;
+  },
+  pickup: {
+    value: string;
+    disabled: boolean;
+    coordinates: {
       lat: number;
       lng: number;
-    },
-    pickup: {
-      value: string;
-      disabled: boolean;
-      coordinates: {
-        lat: number;
-        lng: number;
-      }
-    },
-    destination:{
-      value: string;
-      disabled: boolean;
-      coordinates: {
-        lat: number;
-        lng: number;
-      }
     }
+  },
+  destination:{
+    value: string;
+    disabled: boolean;
+    coordinates: {
+      lat: number;
+      lng: number;
+    }
+  }
 }
 
 const initialState:initialState = {

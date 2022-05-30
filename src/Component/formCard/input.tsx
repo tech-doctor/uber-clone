@@ -4,7 +4,7 @@ import axios from "axios";
 import { GOOGLE_API_KEY } from "../const/api";
 import { CenterSVG, ClockSVG, SmallCircleSVG, SmallSquareSVG } from "../const/svg";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import { updatePickupCoordinates, updatePickup,updateDestination, updatePickupDisable} from "../../Store/slice";
+import { updatePickupCoordinates, updatePickup,updateDestination, updatePickupDisable, updateInitialPosition} from "../../Store/slice";
 import  { useGetAddressQuery } from "../../Service/address";
 import Suggestions from "./suggestion";
 
@@ -13,24 +13,26 @@ interface Props {
 }
 
 const FormInput:React.FC<Props> = ({toggleBottomSheet}) => {
-  const dispatch = useAppDispatch();
-  const currentRoute = useLocation();
-  const history = useHistory();
+const dispatch = useAppDispatch();
+const currentRoute = useLocation();
+const history = useHistory();
 
-  const pickup:string = useAppSelector(state => state.root.pickup.value);
-  const destination:string = useAppSelector(state => state.root.destination.value);
-  const isPickupDisable:boolean = useAppSelector(state => state.root.pickup.disabled);
-  const isDestinationDisable:boolean = useAppSelector(state => state.root.destination.disabled);
+const pickup:string = useAppSelector(state => state.root.pickup.value);
+const destination:string = useAppSelector(state => state.root.destination.value);
+const isPickupDisable:boolean = useAppSelector(state => state.root.pickup.disabled);
+const isDestinationDisable:boolean = useAppSelector(state => state.root.destination.disabled);
 
-  const [suggestions, setSuggestions] = useState<never[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const pickupRef = useRef<any>();
-  const destinationRef = useRef<any>();
-  const [currentCordinate, setCurrentCordinate] = useState({lat: 0, lng: 0});
+const [suggestions, setSuggestions] = useState<never[]>([]);
+const [isLoading, setIsLoading] = useState(false);
+const pickupRef = useRef<any>();
+const destinationRef = useRef<any>();
+const [currentCordinate, setCurrentCordinate] = useState({lat: 0, lng: 0});
+const [browserSupported, setBrowserSupported] = useState(false);
 
-  const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(currentCordinate); 
+const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(currentCordinate); 
 
 
+//console.log(data? data.results :'hello');
 
   const fetchPredictions = (input:string) => {
     const proxy = "https://mighty-island-92084.herokuapp.com/"
@@ -94,14 +96,16 @@ const FormInput:React.FC<Props> = ({toggleBottomSheet}) => {
       if (navigator.geolocation){
        navigator.geolocation.getCurrentPosition(
          (position: GeolocationPosition) => {
-            const { latitude, longitude } = position.coords;
-            setCurrentCordinate({lat: latitude, lng: longitude});      
+          const { latitude, longitude } = position.coords;
+          setCurrentCordinate({lat: latitude, lng: longitude}); 
+          dispatch(updateInitialPosition({lat: latitude, lng: longitude}));
+          setBrowserSupported(true);
         },    
        )
       }
     if(currentRoute.pathname === "/"){
       pickupRef.current.focus();
-    }else if(currentRoute.pathname === "/pick"){
+    }else{
       destinationRef.current.focus();
     }
     
@@ -172,17 +176,19 @@ const FormInput:React.FC<Props> = ({toggleBottomSheet}) => {
       <div className="text-[16px] sm:text-md">
         {!isLoading && suggestions.length <= 0 && currentRoute.pathname === "/"?
             <div className="my-5 ">
-            <div onClick={handleClick}  className="each_suggestion flex items-center my-3 cursor-pointer">
-              <div className="icon  p-2.5 bg-black rounded-full mb-3">
-               <CenterSVG/>
-              </div>
-              <div className=" font-san leading-tight  ml-4 border-solid border-b border-gray-200 w-full tracking-tight pb-3">
-                {isFetching &&<span className="font-medium leading-tight">Fetching...</span>}
-                {isSuccess && <span className="font-medium leading-tight">{data.results[0]?.address_components[1].long_name}</span>}
-                <br/>
-                <span className=" text-gray-500 font-normal leading-tight tracking-tight ">Your current location</span>
-              </div>
-            </div>
+              {browserSupported &&
+              <div onClick={handleClick}  className="each_suggestion flex items-center my-3 cursor-pointer">
+                <div className="icon  p-2.5 bg-black rounded-full mb-3">
+                <CenterSVG/>
+                </div>
+                <div className=" font-san leading-tight  ml-4 border-solid border-b border-gray-200 w-full tracking-tight pb-3">
+                  {isFetching  &&<span className="font-medium leading-tight">Fetching...</span>}
+                  {isSuccess && <span className="font-medium leading-tight">{data.results[0]?.address_components[1].long_name}</span>}
+                  <br/>
+                  <span className=" text-gray-500 font-normal leading-tight tracking-tight ">Your current location</span>
+                </div>
+            </div>}
+              
           </div>: ''}
         {isLoading ? <div className="loader font-medium leading-tight mt-2">Fetching...</div> : null} 
         {suggestions?.map<JSX.Element>((data,i) => (
