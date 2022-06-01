@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
-export interface initialState {
+export interface Props {
   mapInitialPosition: {
     lat: number;
     lng: number;
@@ -24,7 +24,7 @@ export interface initialState {
   }
 }
 
-const initialState:initialState = {
+const initialState:Props = {
     mapInitialPosition: {
       lat: 6.5224,
       lng: 3.3792

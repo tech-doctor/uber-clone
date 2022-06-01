@@ -29,34 +29,34 @@ const Account:React.FC<Props> = ({showAccount, setShowAccount}) => {
       </div>
 		  <ul className="lists">
         <List>
-          <a href="#" className="flex items-center">
+          <button className="flex items-center">
           <RecieptSVG/>
           <div className='font-sans text-lg font-medium ml-2'>My trips</div>
-          </a>
+          </button>
         </List>
         <List>
-				  <a href="#" className="flex items-center">
+				  <button className="flex items-center">
             <WalletSVG/>
            <div className='font-sans text-lg font-medium ml-2'>Wallet</div>
-				  </a>
+				  </button>
         </List>
         <List>
-				  <a href="#" className="flex items-center">
+				  <button className="flex items-center">
             <TagSVG/>
            <div className='font-sans text-lg font-medium ml-2'>Promo</div>
-				  </a>
+				  </button>
         </List>
         <List>
-				  <a href="#" className="flex items-center">
+				  <button className="flex items-center">
            <HeadSetSVG/>
            <div className='font-sans text-lg font-medium ml-2'>Support Messaage</div>
-				  </a>
+				  </button>
         </List>
         <List>
-				  <a href="#" className="flex items-center">
+				  <button className="flex items-center">
           <GearSVG/>
            <div className='font-sans text-lg font-medium ml-2'>Profile setting</div>
-				  </a>
+				  </button>
         </List> 
 		  </ul>
     </Menu>
