@@ -1,7 +1,7 @@
 import React,{useRef,useEffect} from "react";
 import { Menu, List } from "../styles/header";
 
-interface List {
+interface Name {
   name: string;
   link: string;
 }
@@ -10,17 +10,14 @@ interface Props {
   key: number;
   title: string;
   position: (top:string, left:string) => object;
-  firstList: List;
-  secondList: List;
-  thirdList: List;
-  fourthList: List;
-  fifthList: List;
-  sixthList?: List;
-  showRide?: boolean;
+  firstList: Name;
+  secondList: Name;
+  thirdList:Name;
+  fourthList: Name;
+  fifthList: Name;
+  sixthList?: Name;
   setShowRide?: (value: boolean) => void;
-  showDrive?: boolean;
   setShowDrive?: (value: boolean) => void;
-  showMore?: boolean;
   setShowMore?: (value: boolean) => void;
 }
 
@@ -33,14 +30,10 @@ const Dropdown:React.FC<Props> = ({
   fourthList,
   fifthList,
   sixthList,
-  showRide,
   setShowRide,
-  showDrive,
   setShowDrive,
-  showMore,
   setShowMore,
 }) => {
-  //  const [showDropDown, setShowDropDown] = React.useState(false);
   const myPosition = ():any => {
     if(title === 'Ride'){
       return position( '6.5%', '15%');

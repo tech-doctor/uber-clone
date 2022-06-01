@@ -27,7 +27,6 @@ const Category:React.FC<Props> = ({
 
   return (
     <div
-    // onClick = {() => handleSelect(name)}
      onClick = {() => handleSelect(name, duration, time, extraDetails, multiplier, showSeater)}
      className="flex   items-center w-full cursor-pointer rounded-lg border-gray-300  hover:border-2 border-solid mt-3  py-6">
       <div className="left px-3">

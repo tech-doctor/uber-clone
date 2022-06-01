@@ -1,11 +1,11 @@
 import React, {useState,  useEffect, useRef} from "react";
 import {useLocation, useHistory} from "react-router-dom";
 import axios from "axios";
-import { GOOGLE_API_KEY } from "../const/api";
+import { GOOGLE_API_KEY, IP_KEY } from "../const/api";
 import { CenterSVG, ClockSVG, SmallCircleSVG, SmallSquareSVG } from "../const/svg";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import { updatePickupCoordinates, updatePickup,updateDestination, updatePickupDisable, updateInitialPosition} from "../../Store/slice";
-import  { useGetAddressQuery } from "../../Service/address";
+import { updatePickup,updateDestination, updatePickupDisable, updateInitialPosition} from "../../Store/slice";
+import  { useGetAddressQuery} from "../../Service/address";
 import Suggestions from "./suggestion";
 
 interface Props {
@@ -17,10 +17,32 @@ const dispatch = useAppDispatch();
 const currentRoute = useLocation();
 const history = useHistory();
 
-const pickup:string = useAppSelector(state => state.root.pickup.value);
+const [countryCode, setCountryCode] = useState(null);
+
+useEffect(() => {
+  let mounted = true;
+  if(mounted){
+    fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${IP_KEY}`)
+    .then( async res => {
+      try {
+        const result = await res.json();
+        setCountryCode(result?.country_code2);
+      }catch (error) {
+        console.log(error);
+      }
+    })
+  }
+  return () => {
+    mounted = false;
+  }
+}, [])
+
+
+const pickup:any = useAppSelector(state => state.root.pickup.value);
 const destination:string = useAppSelector(state => state.root.destination.value);
 const isPickupDisable:boolean = useAppSelector(state => state.root.pickup.disabled);
 const isDestinationDisable:boolean = useAppSelector(state => state.root.destination.disabled);
+// const pickUpCoordinate = useAppSelector(state => state.root.pickup.coordinates);
 
 const [suggestions, setSuggestions] = useState<never[]>([]);
 const [isLoading, setIsLoading] = useState(false);
@@ -29,15 +51,16 @@ const destinationRef = useRef<any>();
 const [currentCordinate, setCurrentCordinate] = useState({lat: 0, lng: 0});
 const [browserSupported, setBrowserSupported] = useState(false);
 
-const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(currentCordinate); 
+// const [pickupCoordinate, setPickupCordinate] = useState(null);
+// const [destinationCoordinate, setDestinationCordinate] = useState(null);
 
+ const {data, isFetching, isSuccess} =  useGetAddressQuery<any>(currentCordinate); 
 
-//console.log(data? data.results :'hello');
-
+  
   const fetchPredictions = (input:string) => {
     const proxy = "https://mighty-island-92084.herokuapp.com/"
     setIsLoading(true);
-    axios(` ${proxy}https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&components=country:NG&key=${GOOGLE_API_KEY}`, {
+    axios(`${proxy}https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&components=country:${countryCode !==null?countryCode:'NG' }&key=${GOOGLE_API_KEY}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -54,27 +77,6 @@ const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(
     })
   }
 
-  function getCoordinate(address:string, update:any) {
-    const proxy = "https://mighty-island-92084.herokuapp.com/"
-    axios(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_API_KEY}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(async res => {
-      try {
-        const result = await res.data;
-        const position = result.results[0].geometry.location;   
-          dispatch(update(position));  
-      }
-      catch (error) {
-        console.log(error);
-      }
-    })
-  }
-
-
   const handlePickupInput = (e:any) => {
     dispatch(updatePickup(e.target.value));
     if(pickup.length > 1) {
@@ -90,9 +92,9 @@ const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(
   }
 
   useEffect(() => {
-    let mounted = true;
-    const controller = new AbortController();
-    const signal = controller.signal;
+    //let mounted = true;
+    //const controller = new AbortController();
+   // const signal = controller.signal;
       if (navigator.geolocation){
        navigator.geolocation.getCurrentPosition(
          (position: GeolocationPosition) => {
@@ -111,15 +113,15 @@ const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(
     
     return () => {
       setCurrentCordinate({lat: 0, lng: 0});
-      mounted = false;
+      //mounted = false;
     }
-  }, [currentRoute.pathname]);
+  }, [currentRoute.pathname, dispatch]);
+
 
 
   const handleClick  = (e:any) => {
     e.preventDefault();
     const currentLocation = data.results[0]?.address_components[1].long_name;
-    getCoordinate(currentLocation, updatePickupCoordinates);
     dispatch(updatePickup(currentLocation));
     dispatch(updatePickupDisable(true));
     history.push(`/pick/${currentLocation}`);
@@ -137,13 +139,13 @@ const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(
         </div>
         <div className="input_field">
           <input
+           type = 'text' 
           onClick={toggleBottomSheet}
           ref={pickupRef}
           id = "pickup"
           value={pickup}
           onChange={handlePickupInput}
           className="w-full  my-2  py-3 pl-14 border-none focus:ring-2  focus:ring-black bg-light-gray"
-          type = 'search' 
           placeholder = 'Add pickup location'
           disabled = {isPickupDisable}
           autoComplete = "off"
@@ -151,13 +153,13 @@ const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(
           />
            <br/> 
           <input 
+          type = 'text' 
            onClick={toggleBottomSheet}
           ref={destinationRef}
           id = "destination"
           value={destination}
           onChange={handleDestinationInput}
           className="w-full my-2 py-3 pl-14 border-none focus:ring-2  focus:ring-black bg-light-gray"
-          type = 'search' 
           placeholder = 'Enter your destination'
           disabled = {isDestinationDisable}
           autoComplete = "off"
@@ -197,7 +199,6 @@ const {data,  error, isFetching, isSuccess, isError} =  useGetAddressQuery<any>(
             destinationRef={destinationRef}
             key={i} 
             suggestions={data}
-            getCoordinate={getCoordinate}
           />))}
       </div>  
     </div>

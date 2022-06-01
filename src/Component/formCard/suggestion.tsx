@@ -1,9 +1,7 @@
 import React from "react";
-import {useLocation, useHistory, useParams} from "react-router-dom";
-import axios from "axios";
+import { useHistory} from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
-import { updatePickupCoordinates, updateDestinationCoordinates, updatePickupDisable, updateDestinationDisable} from "../../Store/slice";
-import { GOOGLE_API_KEY } from "../const/api";
+import {updatePickupDisable, updateDestinationDisable} from "../../Store/slice";
 import { LocationSVG } from "../const/svg";
 
 interface Texts {
@@ -16,10 +14,10 @@ interface  Props{
   suggestions : Texts;
   pickupRef: any;
   destinationRef: any;
-  getCoordinate: (address:string, update:any) => void;
 }
 
-const Suggestions1:React.FC<Props> =  ({suggestions, getCoordinate, pickupRef, destinationRef}) => {
+const Suggestions1:React.FC<Props> =  ({suggestions
+}) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
@@ -29,20 +27,13 @@ const Suggestions1:React.FC<Props> =  ({suggestions, getCoordinate, pickupRef, d
 
   const {main_text, secondary_text} = suggestions.structured_formatting;
  
-  
-  
-  
-
-  
   const handleClick  = (e:any) => {
     e.preventDefault();
     if(isPickupDisable !== true ){
       dispatch(updatePickupDisable(true));
-      getCoordinate(main_text, updatePickupCoordinates);
       history.push(`/pick/${main_text}`);
     }else{ 
       dispatch(updateDestinationDisable(true));
-      getCoordinate(main_text, updateDestinationCoordinates);
       history.push(`/drop/${pickup}/${main_text}`);
     }
   }

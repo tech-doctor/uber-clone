@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useCallback,useMemo } from "react";
+import React,{useState, useEffect, useCallback } from "react";
 import {useParams} from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
@@ -20,12 +20,10 @@ const Drop:React.FC = () => {
 
   const [travelInfo, setTravelInfo] = useState<any>(null);
   const [time, setTime] = useState<any>("");
-  const [throwError, setThrowError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("something went wrong");
+  // const [throwError, setThrowError] = useState<boolean>(false);
+  // const [errorMessage, setErrorMessage] = useState<string>("something went wrong");
   
   const categories = 
-  // useMemo(() => {
-   // return 
     [
       {
         id: 1,
@@ -47,7 +45,6 @@ const Drop:React.FC = () => {
         showSeater: true,
       }
     ]
-  // },[travelInfo, time])as any;
 
   const tripPrice:any = useCallback((multiplier:number) =>{
     const SURGE_FACTOR = 1.5;
@@ -61,14 +58,12 @@ const Drop:React.FC = () => {
 
   
 
-  console.log(window.performance.navigation);
-
   useEffect(() => {
     let mounted = true;
-    //const abortController = new AbortController();
-    //const signal = abortController.signal;
+    const abortController = new AbortController();
+    const signal = abortController.signal;
     if(mounted) {
-      dispatch(updatePickupDisable(true));
+    dispatch(updatePickupDisable(true));
     dispatch(updateDestinationDisable(true));
     dispatch(updatePickup(origin));
     dispatch(updateDestination(end));
@@ -78,23 +73,20 @@ const Drop:React.FC = () => {
       headers: {
         "Content-Type": "application/json"
       },
-      //signal: signal
+      signal
     })
     .then(async res => {
       try {
         const response = await res;
         const {data} = await response;
         const result = data.rows[0].elements[0];
-        console.log(result.status)
         setTravelInfo(result);    
       }
-
       catch (error:any)  {
         if(error.name === "AbortError") {
           console.log("Request Aborted");
         }else{
           console.log(error);
-          console.log('hello hello')
         }
       }
     });
@@ -103,8 +95,7 @@ const Drop:React.FC = () => {
     
     return () => {
       mounted = false;
-      // abortController.abort();  
-      // setTravelInfo(null);
+      abortController.abort();  
       dispatch(updateDestination(""));
       dispatch(updateDestinationDisable(false));
       dispatch(updatePickupDisable(false));

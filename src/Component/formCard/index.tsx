@@ -1,5 +1,4 @@
-import React,{useRef, useState, useEffect} from 'react';
-import {useLocation} from 'react-router-dom';
+import React,{useState, useEffect} from 'react';
 import SwipeableBottomSheet from 'react-swipeable-bottom-sheet';
 import  {useMediaPredicate} from 'react-media-hook';
 import { Wrapper } from '../styles/card';
@@ -15,9 +14,8 @@ interface Props {
 
 
 const FormCard:React.FC<Props> = ({heading, children, requestCategory}) => {
-  const {pathname} = useLocation();
   const screenHeight = window.screen.height
-  const height = (screenHeight * 0.5);
+  const height = (screenHeight * 0.55);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,7 +53,7 @@ const FormCard:React.FC<Props> = ({heading, children, requestCategory}) => {
       boxSizing: 'border-box',
       backgroundColor: 'white',
       fontSize: '18px',
-      //minHeight: '90vh',
+      minHeight: '100vh',
       height: '100%',
       position: 'relative',
       zIndex: 10,
@@ -82,15 +80,17 @@ const FormCard:React.FC<Props> = ({heading, children, requestCategory}) => {
       {children}  
     </div>     
   </Wrapper> : 
-     <div className='container '>
+     <div className='container'>
        <SwipeableBottomSheet
 					overflowHeight={height}
 					open={open}
          	onChange={openBottomSheet}
-          fullScreen = {true}
+          //fullScreen = {true}
           style={{
             position: 'relative',
+            zIndex: 10,
           }}
+          overlay = {false} 
 				>
           {isLoading && <div className='text-black bg-white absolute top-0 w-full h-[50vh] buttom-0 left-0 z-20 sm:rounded-xl'>
              <Loading/>
@@ -117,20 +117,5 @@ const FormCard:React.FC<Props> = ({heading, children, requestCategory}) => {
 }
 
 export default React.memo(FormCard);
-
-
-
-//const IP_KEY = process.env.REACT_APP_IP_KEY;
-
-// const currentLocation = () => {
-//   if(!navigator.geolocation){
-//      return; 
-//   }
-//   function success(position) {
-//     const {latitude, longitude} =position.coords;
-//     console.log(longitude,latitude)
-//  }
-//  navigator.geolocation.getCurrentPosition(success)
-// }
 
 

@@ -1,87 +1,81 @@
-import  React,{useEffect, useCallback, useState} from 'react';
-import {useParams, useLocation} from 'react-router-dom';
-import  { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer} from '@react-google-maps/api';
+import  React,{useEffect,useState} from 'react';
+import {useParams} from 'react-router-dom';
+import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer} from '@react-google-maps/api';
 import { useAppSelector } from '../../Store/hooks';
 import { GOOGLE_API_KEY } from '../const/api';
 import { driversLocations, createKey } from './driversLocation';
 import { mapStyle } from './mapStyle';
 import InfoComponent from './infoComponent';
-import path from 'path';
 import Loading from '../Loading';
 
 
 const Map:React.FC = () => {
   const center:{lat:number, lng:number} = useAppSelector(state => state.root.mapInitialPosition);
-  const pickUpCoordinate = useAppSelector(state => state.root.pickup.coordinates);
-  const destinationCoordinate = useAppSelector(state => state.root.destination.coordinates);
   const {origin, end} = useParams();
-  const {pathname} = useLocation();
 
-  const[map, setMap] = useState<any>(null)
-  const [state, setState] = useState<any>({
-   response: null,
-   travelMode: 'DRIVING',
-  })
+  //const [map, setMap] = useState<any>(null)
+  // const [state, setState] = useState<any>({
+  //  response: null,
+  //  travelMode: 'DRIVING',
+  // })
+
   const [directionsResponse, setDirectionsResponse] = useState<any>(null);
-  
-  const [errorMessage, setErrorMessage] = useState<string>("something went wrong");
-
+  // const [errorMessage, setErrorMessage] = useState<string>("something went wrong");
  const isPickupDisable:boolean = useAppSelector(state => state.root.pickup.disabled);
  const isDestinationDisable:boolean = useAppSelector(state => state.root.destination.disabled);
 
 
-  const { isLoaded,loadError } = useJsApiLoader({
+  const { isLoaded} = useJsApiLoader({
     googleMapsApiKey: `${GOOGLE_API_KEY}`
   }) 
 
-  const calculateRoute = useCallback(async() => {
-    if(!isPickupDisable || !isDestinationDisable) {
-      return;
-    }
-    try {
-      const directionsService:any = new google.maps.DirectionsService();
-      const response = await directionsService.route({
-        origin:origin,
-        destination: end,
-        travelMode: state.travelMode,
-        drivingOptions: {
-          departureTime: new Date(),  
-        }
-      },
-    //  {
-    //     signal: signal
-    //  }
-      );
-      setDirectionsResponse(response);
-      if(response.status !== 'OK') {
-        throw new Error(response.status);
-      } 
-    }
-    catch(error:any) {
-      console.log('from map folder')
-      console.log(error);
-      if(error.code === 'NOT_FOUND') {
-        setErrorMessage('Route not found. Select another  location route and try again');
-      }else {
-        setErrorMessage('Something went wrong. Please try again');
-      }  
-    }
-  },[isDestinationDisable, isPickupDisable, origin, end, state.travelMode]);
+
+ //const  milliSeconds = new Date().getMilliseconds();
+
+ // eslint-disable-next-line 
+  const getCurrentSeconds = () => {
+    const date = new Date();
+    return date.getMilliseconds();
+  };
 
   useEffect(() => {
-     //const abortController = new AbortController();
-     //const signal = abortController.signal;
     let mounted = true;
-    if (mounted) {
-      calculateRoute();
+    if(mounted){
+      (async() => {
+        if(!isPickupDisable || !isDestinationDisable) {
+          return;
+        }
+        try {
+          const directionsService:any = new google.maps.DirectionsService();
+          const response = await directionsService.route({
+            origin:origin,
+            destination: end,
+            travelMode: 'DRIVING',
+            drivingOptions: {
+              departureTime: new Date(),  
+            },
+          }
+          );
+          setDirectionsResponse(response);
+          if(response.status !== 'OK') {
+            throw new Error(response.status);
+          } 
+        }
+        catch(error:any) {
+          console.log(error);
+          // if(error.code === 'NOT_FOUND') {
+          //   setErrorMessage('Route not found. Select another  location route and try again');
+          // }else {
+          //   setErrorMessage('Something went wrong. Please try again');
+          // }  
+        }
+      })();
     }
     return ()  => {
-      //abortController.abort();
       mounted = false;
     }
-  }, [calculateRoute])
+  }, [getCurrentSeconds, isPickupDisable, isDestinationDisable, origin, end]);
  
-const place ='origin'
 
 
 
@@ -99,7 +93,7 @@ const place ='origin'
   
 
   return (
-    <div className={` bg-gray-300  h-[50vh] sm:h-screen w-full`}>
+    <div className={` bg-gray-300  h-[45vh] sm:h-screen w-full`}>
       <GoogleMap
           id='map'
           mapContainerStyle={{width: '100%', height: '100%'}}
@@ -111,17 +105,20 @@ const place ='origin'
             mapTypeControl: false,
             styles: mapStyle,
             clickableIcons: false,
+            //zoomControl: false
+
           }}
-          onLoad={(map) => {
-            setMap(map);
-          }}> 
+          // onLoad={(map) => {
+          //   setMap(map);
+          // }}
+          > 
            
           <Marker
           position={center}
           options  = {{
             icon: {
-              url: 'https://www.nicepng.com/png/full/101-1015767_map-marker-circle-png.png',
-              scaledSize: new google.maps.Size(60, 60), 
+              url: 'https://res.cloudinary.com/rririsrisurisux/image/upload/v1653965126/location-icon_drtx9v.png',
+              scaledSize: new google.maps.Size(22, 22), 
             },  
           }}
           />
@@ -131,30 +128,20 @@ const place ='origin'
               options = {{
                 icon: {
                   url: 'https://github.com/EfficientProgramming01/uberClone/blob/master/assets/carMarker.png?raw=true',
+                  // url: 'https://d1a3f4spazzrp4.cloudfront.net/car-types/map70px/product/map-uberx.png',
                   scaledSize: new google.maps.Size(35, 18),
                 }
               }}
             />
           ))}
-          {/* {pathname === `/drop/${origin}/${end}`  && 
-          <div>
-            <InfoComponent
-          center = {pickUpCoordinate}
-          place  = {`From ${origin}`}
-           />
-          
-          </div>
-
-           } */}
       {directionsResponse !== null &&
+      
       <div>
-        
         <Marker
           position={directionsResponse.routes[0].legs[0].start_location}
-          onLoad={(marker) => {
-            marker.setMap(map);
-          }}
-          // position={pickUpCoordinate}
+          // onLoad={(marker) => {
+          //   marker.setMap(map);
+          // }}
           options = {{
             icon: {
               url: 'https://www.picng.com/upload/vinyl/png_vinyl_35563.png',
@@ -162,11 +149,16 @@ const place ='origin'
             }
            }}
         />
+          <InfoComponent
+          center = {directionsResponse.routes[0].legs[0].start_location}
+          place  = {`From ${origin}`}
+        />
          
-         {/* <InfoComponent
-          center = {destinationCoordinate}
+         <InfoComponent
+          center = {directionsResponse.routes[0].legs[0].end_location}
           place  = {`To ${end}`}
-        /> */}
+        />
+
         <Marker
           position={directionsResponse.routes[0].legs[0].end_location}
           options = {{

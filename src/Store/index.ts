@@ -9,7 +9,7 @@ export const store = configureStore({
     [currentAddress.reducerPath]: currentAddress.reducer,
 
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(currentAddress.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(currentAddress.middleware)
 });
 
 setupListeners(store.dispatch);

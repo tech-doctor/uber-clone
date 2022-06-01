@@ -8,6 +8,7 @@ import Drop from './Pages/drop';
 import NoPage from './Pages/Nopage';
 
 const  App:React.FC = () => {
+
   return (
     <div>
       <Router>
@@ -16,12 +17,6 @@ const  App:React.FC = () => {
             <Route exact path = "/pick/:origin" component={Pick}/>
             <ErrorBoundary
               FallbackComponent={ErrorFallback}
-              // onError={(error:any, info) => {
-              //   console.log(error, info);
-              // }}
-              onReset={() => {
-
-              }}
             >
             <Route exact path = "/drop/:origin/:end" component = {Drop}/>
             </ErrorBoundary>

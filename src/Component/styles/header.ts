@@ -61,7 +61,7 @@ export const SideBar= styled.div`
  top: 0;
  left: 0;
  background-color: white;
- z-index: 10;
+ z-index: 50;
  overflow:hidden;
  animation: ${sidebarAnimation} 0.4s ease-in-out;
 `

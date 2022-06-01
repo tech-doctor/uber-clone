@@ -1,20 +1,14 @@
 import React from "react";
 
 interface Props {
-  showRide: boolean;
   setShowRide: (value: boolean) => void;
-  showDrive: boolean;
   setShowDrive: (value: boolean) => void;
-  showMore: boolean;
   setShowMore: (value: boolean) => void;
-  showAccount: boolean;
   setShowAccount: (value: boolean) => void;
 }
 
 
-const MenuBar: React.FC<Props> = ({showRide, setShowRide, showDrive, setShowDrive, showMore, setShowMore, showAccount, setShowAccount}) => {
-
-
+const MenuBar: React.FC<Props> = ({setShowRide,  setShowDrive, setShowMore,  setShowAccount}) => {
 
   return(
      <nav className="nav_bar bg-black text-white p-0 px-5 md:px-10 lg:px-12 xl:px-[85px] 2xl:px-[130px]">
