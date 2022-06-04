@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
 export interface Props {
+  errorMessage: string;
   mapInitialPosition: {
     lat: number;
     lng: number;
@@ -25,6 +26,7 @@ export interface Props {
 }
 
 const initialState:Props = {
+   errorMessage: "Route not found. Select an alternative  location route and try again...",
     mapInitialPosition: {
       lat: 6.5224,
       lng: 3.3792
@@ -54,6 +56,9 @@ export const slice = createSlice ({
     name: 'slice',
     initialState,
     reducers: {
+      updateErrorMessage: (state, action: PayloadAction<string>) => {
+        state.errorMessage = action.payload;
+      },
       updateInitialPosition: (state, action:  PayloadAction<{lat: number, lng: number}>) => {
         state.mapInitialPosition = action.payload;
       },
@@ -79,6 +84,6 @@ export const slice = createSlice ({
 })
 
 
-export const { updateInitialPosition, updatePickup, updateDestination, updatePickupDisable, updateDestinationDisable, updatePickupCoordinates, updateDestinationCoordinates} = slice.actions;
+export const {updateErrorMessage, updateInitialPosition, updatePickup, updateDestination, updatePickupDisable, updateDestinationDisable, updatePickupCoordinates, updateDestinationCoordinates} = slice.actions;
 
 export default slice.reducer;

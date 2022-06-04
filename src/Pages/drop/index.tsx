@@ -1,4 +1,4 @@
-import React,{useState, useEffect, useCallback } from "react";
+import React,{useState, useEffect, useCallback, useRef} from "react";
 import {useParams} from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
@@ -10,6 +10,7 @@ import FormCard from "../../Component/formCard";
 import Header from "../../Component/header";
 import Map from "../../Component/map";
 import Category from "./category";
+import Response from "./response";
 import ErrorFallback from "../../Component/ErrorFallBack";
 
 
@@ -20,6 +21,8 @@ const Drop:React.FC = () => {
 
   const [travelInfo, setTravelInfo] = useState<any>(null);
   const [time, setTime] = useState<any>("");
+  const [openResponseModal, setOpenResponseModal] = useState<boolean>(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   // const [throwError, setThrowError] = useState<boolean>(false);
   // const [errorMessage, setErrorMessage] = useState<string>("something went wrong");
   
@@ -43,7 +46,7 @@ const Drop:React.FC = () => {
         time: time? time : "loading..",
         multiplier: 1,
         showSeater: true,
-      }
+      },
     ]
 
   const tripPrice:any = useCallback((multiplier:number) =>{
@@ -128,9 +131,7 @@ const Drop:React.FC = () => {
 
   const handleSelect = useCallback ((name:string, duration:string, time:string, extraDetails:string, multiplier:number, showSeater:boolean) => {
     setDetails({name, duration, time, extraDetails, multiplier, showSeater});
-    console.log('double click');
     setShowDetails(true);
-   
   },[]);
 
   
@@ -147,7 +148,8 @@ const Drop:React.FC = () => {
       <FormCard
         heading="Choose a ride."
       >
-      <div className="my-4 sm:my-7 relative">
+        {/* <div className="flex flex-col  bg-red-200 justify-between"> */}
+        <div className="my-4 sm:my-8 sm:py-4 relative sm:overflow-y-scroll sm:max-h-[200px] scroll">
        {categories?.map((category,i) => 
         <Category   
           key={category.id} 
@@ -165,7 +167,7 @@ const Drop:React.FC = () => {
       </div>
       
       {showDetails &&
-      <div className=" absolute z-10 w-full bg-white left-0 right-0 bottom-[110px] sm:bottom-0  px-5 py-2 h-[40vh]">
+      <div className=" absolute  z-10 w-full bg-white left-0 right-0 bottom-[110px] sm:bottom-0  px-5 py-2 h-[80%] sm:h-[57%]">
         <div 
         onClick={() => setShowDetails(false)}
         className="cancel cursor-pointer hover:bg-gray-200 w-fit p-1 ml-auto">
@@ -191,7 +193,8 @@ const Drop:React.FC = () => {
         </div> 
       </div>}
         
-      <div className='bg-white w-full px-5 py-4  absolute left-0 bottom-0   z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 rounded-b-xl'>
+      {/* <div className='bg-white w-full px-5 py-4  absolute left-0 bottom-0   z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 rounded-b-xl'> */}
+      <div className='bg-white w-full px-5 py-4 absolute left-0 bottom-0  z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 sm:rounded-b-xl'>
         <div className='cash_request flex pb-2.5'>
           <div className="icon">
             <img  className='w-[20px]  h-[20px]'
@@ -201,12 +204,23 @@ const Drop:React.FC = () => {
             Uber cash . Business
           </div>
         </div>
-        <button className='button font-medium bg-black text-white text-xl w-full py-3 hover:opacity-80'>
+        <button 
+        onClick={() => {
+          setOpenResponseModal(true);
+        }}
+        ref={buttonRef}
+        className='button font-medium bg-black text-white text-xl w-full py-3 hover:opacity-80'>
           {`Request ${details.name}`}
         </button>
-      </div>   
+        {openResponseModal && <Response
+          openResponseModal={openResponseModal}
+          setOpenResponseModal={setOpenResponseModal}
+          buttonRef={buttonRef}
+        />} 
+      </div>  
+        {/* </div> */}
       </FormCard>
-    </div>
+     </div>
   )
 }
 

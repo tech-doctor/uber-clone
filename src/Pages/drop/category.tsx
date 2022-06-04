@@ -28,7 +28,7 @@ const Category:React.FC<Props> = ({
   return (
     <div
      onClick = {() => handleSelect(name, duration, time, extraDetails, multiplier, showSeater)}
-     className="flex   items-center w-full cursor-pointer rounded-lg border-gray-300  hover:border-2 border-solid mt-3  py-6">
+     className="flex   items-center w-full cursor-pointer rounded-lg border-gray-300  hover:border-2 border-solid mt-1  py-6">
       <div className="left px-3">
         <div className="car_image">
           <img alt="car" height="88" width="88" src={carLink}></img>

@@ -1,5 +1,6 @@
 import React,{useEffect} from "react";
 import { useParams } from "react-router-dom";
+import  {useMediaPredicate} from 'react-media-hook';
 import axios from "axios";
 import  { GoogleMap, useJsApiLoader, Marker} from '@react-google-maps/api';
 import { mapStyle } from "../../Component/map/mapStyle";
@@ -56,17 +57,19 @@ const Pick:React.FC = () => {
     }
   }, [ dispatch,  origin])
 
+  const  biggerScreen = useMediaPredicate('(min-width: 640px)');
+
+  const {lat, lng} = pickUpCoordinate;
 
   if(!isLoaded) {
     return <div>
-
     </div>
   }
-
+  
   return (
     <div>
       <Header/>
-      <div className={` bg-gray-300  h-[50vh] sm:h-screen w-full`}>
+      <div className={` bg-gray-300  h-[45vh] sm:h-screen w-full`}>
         <GoogleMap
           id='map'
           mapContainerStyle={{width: '100%', height: '100%'}}
@@ -78,7 +81,7 @@ const Pick:React.FC = () => {
             mapTypeControl: false,
             styles: mapStyle,
             clickableIcons: false,
-            zoomControl: false,
+            zoomControl: biggerScreen? true: false,
           }}
           
           // onLoad={(map) => {
@@ -86,6 +89,7 @@ const Pick:React.FC = () => {
           // }}
         >  
           <Marker
+            clickable={false}
             position={pickUpCoordinate}
             options  = {{
               icon: {
@@ -98,6 +102,24 @@ const Pick:React.FC = () => {
             center = {pickUpCoordinate}
             place  = {`From ${origin}`}
           />
+
+          <Marker   
+            position={
+              {
+                lat: lat - 0.0015,
+                lng: lng - 0.0015
+              }
+
+            }
+              options = {{
+                icon: {
+                  // url: 'https://www.uttf.com.ua/assets/images/loader2.gif',
+                  // url: 'https://github.com/EfficientProgramming01/uberClone/blob/master/assets/carMarker.png?raw=true',
+                  url: 'https://d1a3f4spazzrp4.cloudfront.net/car-types/map70px/product/map-uberx.png',
+                  scaledSize: new google.maps.Size(25, 25), 
+                }  
+              }}
+            />
           </GoogleMap>
         </div>
       <FormCard

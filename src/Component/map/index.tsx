@@ -1,7 +1,9 @@
 import  React,{useEffect,useState} from 'react';
 import {useParams} from 'react-router-dom';
-import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer} from '@react-google-maps/api';
-import { useAppSelector } from '../../Store/hooks';
+import  {useMediaPredicate} from 'react-media-hook';
+import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer, StreetViewService } from '@react-google-maps/api';
+import { updateErrorMessage } from '../../Store/slice';
+import { useAppSelector, useAppDispatch } from '../../Store/hooks';
 import { GOOGLE_API_KEY } from '../const/api';
 import { driversLocations, createKey } from './driversLocation';
 import { mapStyle } from './mapStyle';
@@ -12,15 +14,9 @@ import Loading from '../Loading';
 const Map:React.FC = () => {
   const center:{lat:number, lng:number} = useAppSelector(state => state.root.mapInitialPosition);
   const {origin, end} = useParams();
-
-  //const [map, setMap] = useState<any>(null)
-  // const [state, setState] = useState<any>({
-  //  response: null,
-  //  travelMode: 'DRIVING',
-  // })
+  const dispatch = useAppDispatch();
 
   const [directionsResponse, setDirectionsResponse] = useState<any>(null);
-  // const [errorMessage, setErrorMessage] = useState<string>("something went wrong");
  const isPickupDisable:boolean = useAppSelector(state => state.root.pickup.disabled);
  const isDestinationDisable:boolean = useAppSelector(state => state.root.destination.disabled);
 
@@ -29,8 +25,6 @@ const Map:React.FC = () => {
     googleMapsApiKey: `${GOOGLE_API_KEY}`
   }) 
 
-
- //const  milliSeconds = new Date().getMilliseconds();
 
  // eslint-disable-next-line 
   const getCurrentSeconds = () => {
@@ -56,29 +50,29 @@ const Map:React.FC = () => {
             },
           }
           );
+           //console.log(response)
           setDirectionsResponse(response);
-          if(response.status !== 'OK') {
-            throw new Error(response.status);
-          } 
         }
         catch(error:any) {
           console.log(error);
-          // if(error.code === 'NOT_FOUND') {
-          //   setErrorMessage('Route not found. Select another  location route and try again');
-          // }else {
-          //   setErrorMessage('Something went wrong. Please try again');
-          // }  
+          if(error.code === 'NOT_FOUND') {
+            dispatch(updateErrorMessage('One of your waypoints is not accessible at the moment. Select a near location and try again...'));
+          }else if(error.code === 'ZERO_RESULTS') {
+            dispatch(updateErrorMessage('Route is currently not available, select an alternative route and try again...'));
+          }else{
+            dispatch(updateErrorMessage('select an alternative route and try again...'));
+          } 
         }
       })();
     }
     return ()  => {
       mounted = false;
     }
-  }, [getCurrentSeconds, isPickupDisable, isDestinationDisable, origin, end]);
+  }, [getCurrentSeconds, dispatch,isPickupDisable, isDestinationDisable, origin, end]);
  
 
-
-
+  const  biggerScreen = useMediaPredicate('(min-width: 640px)');
+  //console.log(center)
   if(!isLoaded) {
     if(document.readyState !== 'complete') {
       return (
@@ -89,11 +83,8 @@ const Map:React.FC = () => {
     }  
   }
 
-    
-  
-
   return (
-    <div className={` bg-gray-300  h-[45vh] sm:h-screen w-full`}>
+    <div className={` bg-gray-300  h-[45vh] sm:h-[94vh] w-full`}>
       <GoogleMap
           id='map'
           mapContainerStyle={{width: '100%', height: '100%'}}
@@ -105,16 +96,13 @@ const Map:React.FC = () => {
             mapTypeControl: false,
             styles: mapStyle,
             clickableIcons: false,
-            //zoomControl: false
+            zoomControl: biggerScreen? true: false
 
           }}
-          // onLoad={(map) => {
-          //   setMap(map);
-          // }}
           > 
-           
           <Marker
           position={center}
+          clickable={false}
           options  = {{
             icon: {
               url: 'https://res.cloudinary.com/rririsrisurisux/image/upload/v1653965126/location-icon_drtx9v.png',
@@ -122,26 +110,25 @@ const Map:React.FC = () => {
             },  
           }}
           />
-
-          {driversLocations?.map((location) => (
-            <Marker key={createKey(location)}  position={location}
-              options = {{
-                icon: {
-                  url: 'https://github.com/EfficientProgramming01/uberClone/blob/master/assets/carMarker.png?raw=true',
-                  // url: 'https://d1a3f4spazzrp4.cloudfront.net/car-types/map70px/product/map-uberx.png',
-                  scaledSize: new google.maps.Size(35, 18),
-                }
-              }}
-            />
-          ))}
+            {driversLocations?.map((location) => (
+              <Marker key={createKey(location)}  position={location}
+               clickable={false}
+                zIndex={1}
+                options = {{
+                  icon: {
+                    // url: 'https://www.uttf.com.ua/assets/images/loader2.gif',
+                    // url: 'https://github.com/EfficientProgramming01/uberClone/blob/master/assets/carMarker.png?raw=true',
+                    url: 'https://d1a3f4spazzrp4.cloudfront.net/car-types/map70px/product/map-uberx.png',
+                    scaledSize: new google.maps.Size(30, 30),
+                  }
+                }}
+              />
+            ))}   
       {directionsResponse !== null &&
-      
       <div>
         <Marker
+          clickable={false}
           position={directionsResponse.routes[0].legs[0].start_location}
-          // onLoad={(marker) => {
-          //   marker.setMap(map);
-          // }}
           options = {{
             icon: {
               url: 'https://www.picng.com/upload/vinyl/png_vinyl_35563.png',
@@ -160,6 +147,7 @@ const Map:React.FC = () => {
         />
 
         <Marker
+          clickable={false}
           position={directionsResponse.routes[0].legs[0].end_location}
           options = {{
             icon: {

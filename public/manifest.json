@@ -1,22 +1,38 @@
 {
-  "name": "Uber clone",
-  "short_name": "Isaac",
-  "theme_color": "black",
-  "background_color": "black",
+  "name": "Uber clone ",
+  "short_name": "Uber clone",
+  "theme_color": "#000000",
+  "background_color": "#000000",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
   "icons": [
-    
     {
-      "src": "./Assets/uber-192.jpg",
+      "src": "/Assets/maskable.png",
+      "sizes": "196x196",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./Assets/uberIcon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg"
-    } ,
+      "type": "image/png"
+    },
     {
-      "src": "./Assets/uber-512.jpg",
+      "src": "./Assets/uberIcon-256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "./Assets/uberIcon-384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "./Assets/uberIcon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg"
-    }   
+      "type": "image/png"
+    }
+    
   ]
 }

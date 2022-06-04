@@ -75,3 +75,10 @@ export const RightAngleSVG = () => {
    
   )
 }
+
+
+export const CancelSVG = () => {
+  return (
+    <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" data-baseweb="icon" aria-label="Clear value" role="button" className="_css-kAOgSm"><title>Clear value</title><path d="M12 1C5.9 1 1 5.9 1 12s4.9 11 11 11 11-4.9 11-11S18.1 1 12 1zm6 15l-2 2-4-4-4 4-2-2 4-4-4-4 2-2 4 4 4-4 2 2-4 4 4 4z" fill="currentColor"></path></svg>
+  )
+}

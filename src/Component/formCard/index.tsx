@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import SwipeableBottomSheet from 'react-swipeable-bottom-sheet';
 import  {useMediaPredicate} from 'react-media-hook';
+import { useAppSelector } from "../../Store/hooks";
 import { Wrapper } from '../styles/card';
 import FormHeading from '../formCard/heading';
 import FormInput from '../formCard/input';
@@ -16,6 +17,9 @@ interface Props {
 const FormCard:React.FC<Props> = ({heading, children, requestCategory}) => {
   const screenHeight = window.screen.height
   const height = (screenHeight * 0.55);
+  const isPickupDisable:boolean = useAppSelector(state => state.root.pickup.disabled);
+const isDestinationDisable:boolean = useAppSelector(state => state.root.destination.disabled);
+  
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,7 +58,7 @@ const FormCard:React.FC<Props> = ({heading, children, requestCategory}) => {
       backgroundColor: 'white',
       fontSize: '18px',
       minHeight: '100vh',
-      height: '100%',
+      //height: '100%',
       position: 'relative',
       zIndex: 10,
     }
@@ -76,19 +80,20 @@ const FormCard:React.FC<Props> = ({heading, children, requestCategory}) => {
     <FormInput
       toggleBottomSheet={toggleBottomSheet}
     />
-    <div>
+    <div className={ isPickupDisable && isDestinationDisable ? `sm:overflow-y-scroll sm:min-h-[340px] mt-[-20px] scroll`: ''}>
       {children}  
     </div>     
-  </Wrapper> : 
+  </Wrapper>: 
      <div className='container'>
        <SwipeableBottomSheet
 					overflowHeight={height}
 					open={open}
          	onChange={openBottomSheet}
-          //fullScreen = {true}
+          fullScreen = {true}
           style={{
             position: 'relative',
             zIndex: 10,
+            //minHeight: '100vh',
           }}
           overlay = {false} 
 				>
