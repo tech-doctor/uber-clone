@@ -97,7 +97,7 @@ const isDestinationDisable:boolean = useAppSelector(state => state.root.destinat
           }}
           overlay = {false} 
 				>
-          {isLoading && <div className='text-black bg-white absolute top-0 w-full h-[50vh] buttom-0 left-0 z-20 sm:rounded-xl'>
+          {isLoading && <div className='text-black bg-white absolute top-0 bottom-0 w-full h-[50vh] left-0 z-20 sm:rounded-xl'>
              <Loading/>
           </div> }
           <Wrapper style={styles.text}>

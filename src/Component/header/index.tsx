@@ -50,7 +50,18 @@ const Header:React.FC = ()=> {
       clearInterval(time);
     }
   })
+
+  // useEffect(() => {
+  //   function isInStandaloneMode() {
+  //     return (window.matchMedia('(display-mode: standalone)').matches);
+  //   }
+  //   if (isInStandaloneMode()) { 
+
+  //   }
+  // })
   
+
+
       
   return (
     <div>

@@ -7,7 +7,6 @@ export const store = configureStore({
   reducer: {
     root: counterReducer,
     [currentAddress.reducerPath]: currentAddress.reducer,
-
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(currentAddress.middleware)
 });

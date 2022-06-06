@@ -223,7 +223,7 @@ const Drop:React.FC = () => {
       }
       </FormCard>
       {!biggerScreen && 
-        <div className='bg-white w-full px-5 py-4 absolute left-0 bottom-0  z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 sm:rounded-b-xl'>
+        <div className='bg-white w-full px-5 py-4 fixed left-0 bottom-0  z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 sm:rounded-b-xl'>
         <div className='cash_request flex pb-2.5'>
           <div className="icon">
             <img  className='w-[20px]  h-[20px]'

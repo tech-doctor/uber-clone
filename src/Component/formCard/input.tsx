@@ -117,18 +117,15 @@ const [browserSupported, setBrowserSupported] = useState(false);
     e.preventDefault();
     const addressNo = data.results[0]?.address_components[0]?.long_name;
     const addressName = data.results[0]?.address_components[1]?.long_name;
-    if(addressNo){
-      const currentLocation = `${addressNo} ${addressName}`;
-    } 
-      const currentLocation = addressName;
-    //const currentLocation = data.results[0]?.formatted_address;
+    
+    const currentLocation = `${addressNo} ${addressName}`;
+     console.log(currentLocation);
     dispatch(updatePickup(currentLocation));
     dispatch(updatePickupDisable(true));
     history.push(`/pick/${currentLocation}`);
   }
   
 
-  
   return(
     <div>
       <div className={isPickupDisable && isDestinationDisable? `hidden sm:block input_fields relative`: `input_fields relative`}>

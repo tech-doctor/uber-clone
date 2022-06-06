@@ -30,7 +30,6 @@ const Pick:React.FC = () => {
       dispatch(updatePickup(origin));
       dispatch(updatePickupDisable(true));
       const  getCoordinate = (address:string,) => {
-        //const proxy = "https://mighty-island-92084.herokuapp.com/"
         axios(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_API_KEY}`, {
           method: "GET",
           headers: {
@@ -40,9 +39,9 @@ const Pick:React.FC = () => {
         .then(async res => {
           try {
             const result = await res.data;
-           const position =  await result.results[0].geometry.location;   
-            dispatch(updatePickupCoordinates(position));
-             //console.log(result);
+          const position =  await result.results[0].geometry.location;   
+           dispatch(updatePickupCoordinates(position));
+            //console.log(result);
           }
           catch (error) {
             console.log(error);

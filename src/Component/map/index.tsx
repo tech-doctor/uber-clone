@@ -161,6 +161,7 @@ const Map:React.FC = () => {
           directions={directionsResponse}
           options = {{
             polylineOptions: {
+              clickable: false,
               strokeColor: 'black',
               strokeWeight: 3,
               strokeOpacity: 1,
