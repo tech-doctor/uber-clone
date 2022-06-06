@@ -22,7 +22,7 @@ axios(config)
       lng: res.data.results[i].geometry.location.lng
     })
   }
-  console.log(driversLocations);
+  //console.log(driversLocations);
 })
 .catch(function (error) {
   console.log(error);

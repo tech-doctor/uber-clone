@@ -40,8 +40,9 @@ const Pick:React.FC = () => {
         .then(async res => {
           try {
             const result = await res.data;
-            const position =  await result.results[0].geometry.location;   
-             dispatch(updatePickupCoordinates(position));
+           const position =  await result.results[0].geometry.location;   
+            dispatch(updatePickupCoordinates(position));
+             //console.log(result);
           }
           catch (error) {
             console.log(error);

@@ -15,7 +15,7 @@ const MenuBar: React.FC<Props> = ({setShowRide,  setShowDrive, setShowMore,  set
      <div className="nav_bar_container flex items-center justify-between px-2 md:px-10 lg:px-12">
       <ul className="nav_left flex items-center ">
         <li className="nav_bar_logo mr-14  cursor-pointer">
-          <a href="https://www.uber.com/">
+          <a href="/">
             <div className='font-sans text-2xl font-normal'>Uber</div>
           </a>
         </li>

@@ -30,7 +30,7 @@ const Response:React.FC<Props> =({openResponseModal, setOpenResponseModal, butto
     <div className={openResponseModal?`fixed top-0 w-full h-full left-0`: `hidden`} >
       <Modal ref={modalRef} className=" z-30 opacity-1 py-3 px-4 lg:py-5 lg:px-7 w-[90%] sm:w-[60%]  md:w-[50%] lg:w-[40%] bg-gray-50 shadow-sm shadow-gray-400 rounded-xl" role="alert">
       <h2 className=" text-lg sm:text-xl md:text-2xl font-medium text-center">What are you trying to do? &#128527;</h2>
-      <p className="my-4 md:my-6 text-center">Don't tell me you're really trying to request for a ride, this is just a personal project for practice dawg.. &#128541;</p>
+      <p className="my-4 md:my-6 text-center">Don't tell me you're really trying to request for a ride&#128514;&#128514;, this is just a personal project for practice dawg..&#128541;</p>
       <p></p>
       <button
       onClick={() => {
@@ -39,7 +39,7 @@ const Response:React.FC<Props> =({openResponseModal, setOpenResponseModal, butto
       className="w-full center bg-black text-white text-md lg:text-lg font-semibold p-1 md:p-2 hover:opacity-80"
       >Close</button>
       </Modal>
-      <div className="fixed top-0 w-full h-full left-0 bottom-0 bg-black opacity-80" >
+      <div className="fixed top-0 w-full h-full left-0 bottom-0 bg-black opacity-90" >
       </div>
       </div>
   )

@@ -18,7 +18,7 @@ const MobileHeader:React.FC = () => {
     <MobileNav className='fixed z-10 top-0 left-0'>
       <div className="uber py-1">
         {location.pathname ==='/' ?
-         <a href="https://www.uber.com/">
+         <a href="/">
           <div className='font-sans text-2xl font-normal'>Uber</div>
         </a> : 
         <svg 

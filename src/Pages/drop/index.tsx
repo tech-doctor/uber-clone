@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
 import { ErrorBoundary } from "react-error-boundary";
+import  {useMediaPredicate} from 'react-media-hook';
 import { useAppDispatch } from "../../Store/hooks";
 import { updatePickup, updateDestination, updatePickupDisable, updateDestinationDisable } from "../../Store/slice";
 import { GOOGLE_API_KEY } from "../../Component/const/api";
@@ -134,7 +135,7 @@ const Drop:React.FC = () => {
     setShowDetails(true);
   },[]);
 
-  
+  const  biggerScreen = useMediaPredicate('(min-width: 640px)');
 
   return (
     <div>
@@ -148,8 +149,8 @@ const Drop:React.FC = () => {
       <FormCard
         heading="Choose a ride."
       >
-        {/* <div className="flex flex-col  bg-red-200 justify-between"> */}
-        <div className="my-4 sm:my-8 sm:py-4 relative sm:overflow-y-scroll sm:max-h-[200px] scroll">
+      
+        <div className="my-4 sm:my-8 sm:py-4 relative sm:overflow-y-scroll sm:max-h-[200px]  scroll">
        {categories?.map((category,i) => 
         <Category   
           key={category.id} 
@@ -193,8 +194,36 @@ const Drop:React.FC = () => {
         </div> 
       </div>}
         
-      {/* <div className='bg-white w-full px-5 py-4  absolute left-0 bottom-0   z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 rounded-b-xl'> */}
+      {/* <div className='bg-white w-full px-5 py-4  absolute left-0 bottom-0   z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 sm:rounded-b-xl'> */}
+      {biggerScreen && 
       <div className='bg-white w-full px-5 py-4 absolute left-0 bottom-0  z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 sm:rounded-b-xl'>
+      <div className='cash_request flex pb-2.5'>
+        <div className="icon">
+          <img  className='w-[20px]  h-[20px]'
+          alt="payment-method" src="https://tb-static.uber.com/prod/wallet/icons/stored_value_3x.png"></img>
+        </div>
+        <div className="details  font-medium ml-4">
+          Uber cash . Business
+        </div>
+      </div>
+      <button 
+      onClick={() => {
+        setOpenResponseModal(true);
+      }}
+      ref={buttonRef}
+      className='button font-medium bg-black text-white text-xl w-full py-3 hover:opacity-80'>
+        {`Request ${details.name}`}
+      </button>
+      {openResponseModal && <Response
+        openResponseModal={openResponseModal}
+        setOpenResponseModal={setOpenResponseModal}
+        buttonRef={buttonRef}
+      />} 
+    </div>  
+      }
+      </FormCard>
+      {!biggerScreen && 
+        <div className='bg-white w-full px-5 py-4 absolute left-0 bottom-0  z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 sm:rounded-b-xl'>
         <div className='cash_request flex pb-2.5'>
           <div className="icon">
             <img  className='w-[20px]  h-[20px]'
@@ -218,8 +247,9 @@ const Drop:React.FC = () => {
           buttonRef={buttonRef}
         />} 
       </div>  
-        {/* </div> */}
-      </FormCard>
+
+      }
+      
      </div>
   )
 }

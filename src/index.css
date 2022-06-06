@@ -45,3 +45,7 @@ body,
 .scroll::-webkit-scrollbar {
   display: none !important;
 }
+
+@media all and (display-mode: standalone) {
+  /* Here goes the CSS rules that will only apply if app is running standalone */
+}
