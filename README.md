@@ -41,7 +41,8 @@
 4. press enter to create your local clone.
 5. Run npm install on your terminal terminal
 6. Make sure you include your  unique API for the map display and functionality
-7. 
+
+
 
 ### Reqirement & Resources for development: 
  * Any IDE (VSCode, Bracket, Atom, Sublime e.t.c)
