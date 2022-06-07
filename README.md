@@ -1,3 +1,61 @@
+# Uber-Clone
+
+### Description:
+  An exact copy of the uber web with 70-75% of its functionality
+
+### Technology stack:
+* ReactJS
+* Typescript
+* TailwindCSS
+* Styled component
+* Reduxtoolkit & RTKQuery(for state management)
+* Netlify
+
+
+### Features:
+* Location auto complete
+* Direction route rendering.
+
+
+### Status & Purpose:
+ I was able to practicalize working with Reactjs and Typescript on this project.
+
+
+
+ #### API USED: 
+ [Google Map API](https://developers.google.com/maps).
+
+
+### Display: 
+![Display](https://res.cloudinary.com/rririsrisurisux/image/upload/v1654587091/Screenshot_52_f3cf6n.png)
+
+
+### Live Demo
+  * Click [here](https://m-uber-clone.netlify.app/)
+
+
+### Setup:
+1. Copy the repository link 
+2. On your commandline/terminal, change the current working directory to the location where you want the cloned directory.
+3. Type ``` git clone https://github.com/USER_NAME/REPOSITORY_NAME```.(make sure the link is the link to the repository)
+4. press enter to create your local clone.
+5. Run npm install on your terminal terminal
+6. Make sure you include your  unique API for the map display and functionality
+7. 
+
+### Reqirement & Resources for development: 
+ * Any IDE (VSCode, Bracket, Atom, Sublime e.t.c)
+ * Basic knowledge in  ReactJs with Typescript
+ * knowledge of handling  react components and lifecycles with the use of functional component and react-hooks respectively 
+ * Knowledge in fetching and displaying form of  data from a remote API 
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
