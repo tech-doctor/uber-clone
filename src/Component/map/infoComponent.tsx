@@ -1,3 +1,4 @@
+import React from "react";
 import { InfoBox} from "@react-google-maps/api";
 import { RightAngleSVG } from "../const/svg";
 
@@ -34,4 +35,4 @@ const InfoComponent:React.FC<Props> = ({center, place}) => {
   )
 }
 
-export default InfoComponent;
+export default React.memo(InfoComponent);

@@ -1,40 +1,35 @@
 import React from "react";
-import { useHistory} from "react-router-dom";
+import { useHistory, useParams} from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Store/hooks";
 import {updatePickupDisable, updateDestinationDisable} from "../../Store/slice";
 import { LocationSVG } from "../const/svg";
 
-interface Texts {
-  structured_formatting: {
-    main_text: string;
-    secondary_text: string;
-  }
-}
+
 interface  Props{
-  suggestions : Texts;
+  suggestions : any;
   pickupRef: any;
   destinationRef: any;
 }
 
-const Suggestions1:React.FC<Props> =  ({suggestions
+const Suggestions:React.FC<Props> =  ({suggestions
 }) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const {origin} = useParams();
 
-
-  const pickup:string = useAppSelector(state => state.root.pickup.value);
   const isPickupDisable = useAppSelector(state => state.root.pickup.disabled);
 
+  const {description} = suggestions;
   const {main_text, secondary_text} = suggestions.structured_formatting;
  
   const handleClick  = (e:any) => {
     e.preventDefault();
     if(isPickupDisable !== true ){
       dispatch(updatePickupDisable(true));
-      history.push(`/pick/${main_text}`);
+      history.push(`/pick/${description}`);
     }else{ 
       dispatch(updateDestinationDisable(true));
-      history.push(`/drop/${pickup}/${main_text}`);
+      history.push(`/drop/${origin}/${description}`);
     }
   }
   
@@ -53,4 +48,4 @@ const Suggestions1:React.FC<Props> =  ({suggestions
   )
 }
 
-export default Suggestions1;
+export default Suggestions;

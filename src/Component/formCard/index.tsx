@@ -58,7 +58,6 @@ const isDestinationDisable:boolean = useAppSelector(state => state.root.destinat
       backgroundColor: 'white',
       fontSize: '18px',
       minHeight: '100vh',
-      //height: '100%',
       position: 'relative',
       zIndex: 10,
     }
@@ -93,7 +92,6 @@ const isDestinationDisable:boolean = useAppSelector(state => state.root.destinat
           style={{
             position: 'relative',
             zIndex: 10,
-            //minHeight: '100vh',
           }}
           overlay = {false} 
 				>

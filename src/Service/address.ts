@@ -4,7 +4,7 @@
  interface address {
   plus_code: object,
   results: object[],
-  status: string,
+  status: any,
 }
 
 interface cordinates {

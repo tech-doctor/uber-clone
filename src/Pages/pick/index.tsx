@@ -15,9 +15,8 @@ import Header from "../../Component/header";
 const Pick:React.FC = () => {
  const dispatch = useAppDispatch();
  const {origin} = useParams();
- //const[map, setMap] = useState<any>(null)
+ const myOrigin = origin.split(",")[0];
  const pickUpCoordinate = useAppSelector(state => state.root.pickup.coordinates);
-
 
  const { isLoaded} = useJsApiLoader({
   googleMapsApiKey: `${GOOGLE_API_KEY}`
@@ -27,7 +26,7 @@ const Pick:React.FC = () => {
   useEffect(() => {
     let mount = true;
     if(mount){
-      dispatch(updatePickup(origin));
+      dispatch(updatePickup(myOrigin));
       dispatch(updatePickupDisable(true));
       const  getCoordinate = (address:string,) => {
         axios(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_API_KEY}`, {
@@ -41,7 +40,6 @@ const Pick:React.FC = () => {
             const result = await res.data;
           const position =  await result.results[0].geometry.location;   
            dispatch(updatePickupCoordinates(position));
-            //console.log(result);
           }
           catch (error) {
             console.log(error);
@@ -55,7 +53,7 @@ const Pick:React.FC = () => {
       dispatch(updatePickupDisable(false));
       mount = false;  
     }
-  }, [ dispatch,  origin])
+  }, [ dispatch,  origin, myOrigin])
 
   const  biggerScreen = useMediaPredicate('(min-width: 640px)');
 
@@ -82,12 +80,7 @@ const Pick:React.FC = () => {
             styles: mapStyle,
             clickableIcons: false,
             zoomControl: biggerScreen? true: false,
-          }}
-          
-          // onLoad={(map) => {
-          //   setMap(map);
-          // }}
-        >  
+          }}>  
           <Marker
             clickable={false}
             position={pickUpCoordinate}
@@ -100,9 +93,8 @@ const Pick:React.FC = () => {
           />
           <InfoComponent
             center = {pickUpCoordinate}
-            place  = {`From ${origin}`}
+            place  = {`From ${myOrigin}`}
           />
-
           <Marker   
             position={
               {

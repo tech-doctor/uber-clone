@@ -8,7 +8,7 @@ const Home:React.FC = () => {
   return (
     <div>
       <Header/>
-      <Map/>
+       <Map/>
       <FormCard
         heading="Where can we pick you up?"
       />

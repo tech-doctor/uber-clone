@@ -2,10 +2,12 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {ErrorBoundary} from 'react-error-boundary';
 import ErrorFallback from './Component/ErrorFallBack';
+import ProtectedRoute from './Component/ProtectedRoute';
 import Home from './Pages/home';
 import Pick from './Pages/pick';
 import Drop from './Pages/drop';
 import NoPage from './Pages/Nopage';
+import Auth from './Pages/auth';
 
 const  App:React.FC = () => {
     // const [showInsatlledMessage, setShowInsatlledMessage] = useState<boolean>(false);
@@ -37,12 +39,13 @@ const  App:React.FC = () => {
     <div>
       <Router>
           <Switch>
-            <Route exact path = "/" component={Home}/>
-            <Route exact path = "/pick/:origin" component={Pick}/>
+            <Route exact path="/auth" component={Auth} />
+            <ProtectedRoute exact path = "/" component={Home}/>
+            <ProtectedRoute exact path = "/pick/:origin" component={Pick}/>
             <ErrorBoundary
               FallbackComponent={ErrorFallback}
             >
-            <Route exact path = "/drop/:origin/:end" component = {Drop}/>
+            <ProtectedRoute exact path = "/drop/:origin/:end" component = {Drop}/>
             </ErrorBoundary>
             <Route exact path = "*" component = {NoPage}/>
           </Switch>

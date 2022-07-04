@@ -15,18 +15,17 @@ import Response from "./response";
 import ErrorFallback from "../../Component/ErrorFallBack";
 
 
-
 const Drop:React.FC = () => {
   const {origin, end} = useParams();
+  const myOrigin = origin.split(",")[0];
+  const myEnd = end.split(",")[0];
   const dispatch = useAppDispatch();
 
   const [travelInfo, setTravelInfo] = useState<any>(null);
   const [time, setTime] = useState<any>("");
   const [openResponseModal, setOpenResponseModal] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  // const [throwError, setThrowError] = useState<boolean>(false);
-  // const [errorMessage, setErrorMessage] = useState<string>("something went wrong");
-  
+
   const categories = 
     [
       {
@@ -69,8 +68,8 @@ const Drop:React.FC = () => {
     if(mounted) {
     dispatch(updatePickupDisable(true));
     dispatch(updateDestinationDisable(true));
-    dispatch(updatePickup(origin));
-    dispatch(updateDestination(end));
+    dispatch(updatePickup(myOrigin));
+    dispatch(updateDestination(myEnd));
     const proxy = "https://mighty-island-92084.herokuapp.com/"
     axios(`${proxy}https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${end}&units=imperial&key=${GOOGLE_API_KEY}`, {
       method: "GET",
@@ -105,7 +104,7 @@ const Drop:React.FC = () => {
       dispatch(updatePickupDisable(false));
       dispatch(updatePickup(""));
     } 
-  },[ dispatch, origin, end,]);
+  },[ dispatch, origin, end, myOrigin, myEnd ]);
 
 
   
@@ -121,11 +120,11 @@ const Drop:React.FC = () => {
 
   async  function arrivalTime() {
     const duration =  await travelInfo ? travelInfo.duration.text : null;
-    const minutes =  duration? getDuration(duration): null;
+    const minutes =  duration ? getDuration(duration): null;
     const date = new Date(moment().add(minutes, 'm').format());
     const  dt = date.getTime();
     let time = new Date(dt).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
-    setTime(time);   
+    setTime(time); 
   }
 
   arrivalTime();
@@ -193,8 +192,6 @@ const Drop:React.FC = () => {
           <p className="text-sm text-gray-500">Your fare will be the price presented before the trip or based on the rate above and other applicable surcharges and adjustments. </p>
         </div> 
       </div>}
-        
-      {/* <div className='bg-white w-full px-5 py-4  absolute left-0 bottom-0   z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 sm:rounded-b-xl'> */}
       {biggerScreen && 
       <div className='bg-white w-full px-5 py-4 absolute left-0 bottom-0  z-10 shadow-[1px_-3px_6px_0px_rgba(0,0,0,0.1)] shadow-gray-300 sm:rounded-b-xl'>
       <div className='cash_request flex pb-2.5'>
@@ -259,7 +256,11 @@ function getDuration(duration) {
   const minNum = parseInt(duration.split(' ')[2])
   if (duration.includes('hour' || 'hours')) {
     return hourNum * 60 + minNum;
-  }else{
+  }else if(duration.includes('min' || 'mins')){
+    const minNum = parseInt(duration.split(' ')[0])
+    return minNum;
+  }
+  else{
     return minNum;
   }
 }

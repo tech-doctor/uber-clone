@@ -9,8 +9,10 @@ interface Props {
 
 
 const MenuBar: React.FC<Props> = ({setShowRide,  setShowDrive, setShowMore,  setShowAccount}) => {
-
-  return(
+   const userName = localStorage.getItem('userName')
+   const accountName = userName?.split(' ')[0]
+  
+   return(
      <nav className="nav_bar bg-black text-white p-0 px-5 md:px-10 lg:px-12 xl:px-[85px] 2xl:px-[130px]">
      <div className="nav_bar_container flex items-center justify-between px-2 md:px-10 lg:px-12">
       <ul className="nav_left flex items-center ">
@@ -61,7 +63,7 @@ const MenuBar: React.FC<Props> = ({setShowRide,  setShowDrive, setShowMore,  set
           setShowDrive(false)
           setShowMore(false)
           }}
-          className='font-medium py-3'>Oluka</button>
+          className='font-medium py-3'>{accountName? accountName: null}</button>
         </li>
       </ul>  
     </div>
