@@ -25,8 +25,8 @@
 
 
  #### API USED: 
- [Google Map API](https://developers.google.com/maps).
- [Firebase API](https://firebase.google.com).
+ * [Google Map API](https://developers.google.com/maps).
+ * [Firebase API](https://firebase.google.com).
 
 
 ### Display: 
