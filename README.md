@@ -7,23 +7,26 @@
 * ReactJS
 * Typescript
 * TailwindCSS
-* Styled component
+* Styled-component
 * Reduxtoolkit & RTKQuery(for state management)
 * Netlify
 
 
 ### Features:
-* Location auto complete
+* User authentication with Facebook and Google
+* Location auto complete.
 * Direction route rendering.
+* Users current Location with geocurrent location.
+
 
 
 ### Status & Purpose:
  I was able to practicalize working with Reactjs and Typescript on this project.
 
 
-
  #### API USED: 
  [Google Map API](https://developers.google.com/maps).
+ [Firebase API](https://firebase.google.com).
 
 
 ### Display: 
