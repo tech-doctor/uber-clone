@@ -5,7 +5,7 @@ import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer } from '@react-go
 import { updateErrorMessage } from '../../Store/slice';
 import { useAppSelector, useAppDispatch } from '../../Store/hooks';
 import { GOOGLE_API_KEY } from '../const/api';
-import { driversLocations, createKey } from './driversLocation';
+import { driversLocations } from './driversLocation';
 import { mapStyle } from './mapStyle';
 import InfoComponent from './infoComponent';
 import Loading from '../Loading';
@@ -109,8 +109,8 @@ const Map:React.FC = () => {
         },  
       }}
       />
-        {driversLocations?.map((location) => (
-          <Marker key={createKey(location)}  position={location}
+        {driversLocations?.map((location, i) => (
+          <Marker key={i}  position={location}
            clickable={false}
             zIndex={1}
             options = {{
@@ -118,7 +118,7 @@ const Map:React.FC = () => {
                 // url: 'https://www.uttf.com.ua/assets/images/loader2.gif',
                 // url: 'https://github.com/EfficientProgramming01/uberClone/blob/master/assets/carMarker.png?raw=true',
                 url: 'https://d1a3f4spazzrp4.cloudfront.net/car-types/map70px/product/map-uberx.png',
-                scaledSize:  new google.maps.Size(30, 30),
+                scaledSize:  new google.maps.Size(25, 25),
               }
             }}
           />

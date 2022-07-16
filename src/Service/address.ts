@@ -20,13 +20,9 @@ export const currentAddress = createApi({
   }),
   endpoints: (builder) => ({
     getAddress: builder.query<address, cordinates>({
-    query: ({lat,lng}) =>  `geocode/json?latlng=${lat}, ${lng}&key=${GOOGLE_API_KEY}`,
+    query: ({lat,lng}) =>  `geocode/json?latlng=${lat}, ${lng}&result_type=street_address&key=${GOOGLE_API_KEY}`,
     })
   })
 })
-
-
-
-
 
 export const { useGetAddressQuery } = currentAddress;

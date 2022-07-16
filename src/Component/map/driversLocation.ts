@@ -37,6 +37,6 @@ export const locationOptions = {
   imagePath: 'https://creazilla-store.fra1.digitaloceanspaces.com/emojis/45166/black-circle-emoji-clipart-xl.png'
 }
 
-export const createKey =(location) => {
-  return `${location.lat} + ${location.lng}`
-}
+// export const createKey =(location) => {
+//   return `${location.lat} + ${location.lng}`
+// }

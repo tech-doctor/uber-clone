@@ -114,10 +114,10 @@ const [browserSupported, setBrowserSupported] = useState(false);
 
   const handleClick  = (e:any) => {
     e.preventDefault();
-    const currentLocation = data.results[1]?.formatted_address;
+    const currentLocation = data.results[0]?.formatted_address;
     dispatch(updatePickup(currentLocation));
     dispatch(updatePickupDisable(true));
-    //console.log(data);
+    console.log(data);
     history.push(`/pick/${currentLocation}`);
   }
   
@@ -188,14 +188,14 @@ const [browserSupported, setBrowserSupported] = useState(false);
       <div className="text-[16px] sm:text-md">
         {!isLoading && suggestions.length <= 0 && currentRoute.pathname === "/"?
             <div className="my-5 ">
-              {browserSupported &&
+              {browserSupported && data?.status === 'OK' &&
               <div onClick={handleClick}  className="each_suggestion flex items-center my-3 cursor-pointer">
                 <div className="icon  p-2.5 bg-black rounded-full mb-3">
                 <CenterSVG/>
                 </div>
                 <div className=" font-san leading-tight  ml-4 border-solid border-b border-gray-200 w-full tracking-tight pb-3">
                   {isFetching  &&<span className="font-medium leading-tight">Fetching...</span>}
-                  {isSuccess && <span className="font-medium leading-tight">{`${data.results[1]?.formatted_address?.split(",")[0]}`}</span>}
+                  {isSuccess && <span className="font-medium leading-tight">{`${data.results[0]?.formatted_address?.split(",")[0]}`}</span>}
                   <br/>
                   <span className=" text-gray-500 font-normal leading-tight tracking-tight ">Your current location</span>
                 </div>
