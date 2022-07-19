@@ -15,6 +15,7 @@ const Sidebar:React.FC<Props> = ({showSideBar, setShowSideBar}) => {
     transition: 'opacity 0.5s ease-in-out'
   }
 
+  
   const handleClick = () => {
     setOpacity(0)
     setTimeout(() => {

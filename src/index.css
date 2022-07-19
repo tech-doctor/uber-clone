@@ -19,11 +19,11 @@ code {
 
 * {
   box-sizing: border-box;
-  //-webkit-tap-highlight-color: transparent;
+  /* //-webkit-tap-highlight-color: transparent;
   //-webkit-user-select: none;
   //user-select: none;
   //-webkit-user-drag: none;
-  //outline: 1px solid black;
+  //outline: 1px solid black; */
 }
 ::selection {
   background: transparent;

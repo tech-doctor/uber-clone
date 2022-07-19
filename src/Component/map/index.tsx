@@ -36,6 +36,7 @@ const Map:React.FC = () => {
       (async() => {
         if(!isPickupDisable || !isDestinationDisable) {
           return;
+          
         }
         try {
           const directionsService:any = new google.maps.DirectionsService();
@@ -48,7 +49,6 @@ const Map:React.FC = () => {
             },
           }
           );
-           //console.log(response)
           setDirectionsResponse(response);
         }
         catch(error:any) {
@@ -65,23 +65,25 @@ const Map:React.FC = () => {
     }
     return ()  => {
       mounted = false;
-      //console.log('unmounting');
     }
   }, [getCurrentSeconds, dispatch,isPickupDisable, isDestinationDisable, origin, end]);
  
 
   const  biggerScreen = useMediaPredicate('(min-width: 640px)');
-  //console.log(center)
+  
+
   if(!isLoaded) {
-    if(document.readyState !== 'complete') {
+    // if(document.readyState !== 'complete') {
       return (
         <div className='bg-white fixed w-full  h-full top-0 z-50'>
           <Loading/>
         </div>
       )
-    }  
+    // }  
   }
+  
 
+  
   return (
     <div className={` bg-gray-300  h-[45vh] sm:h-[94vh] w-full`}>
       <GoogleMap
@@ -96,7 +98,6 @@ const Map:React.FC = () => {
         styles: mapStyle,
         clickableIcons: false,
         zoomControl: biggerScreen? true: false
-
       }}
       > 
       <Marker

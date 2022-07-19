@@ -6,7 +6,7 @@ const  GreetUser:React.FC = () => {
 
   return(
     <div className="font-sans text-2xl font-medium px-3 py-3">
-      {`Hey, ${accountName?accountName: null}`}
+      {`Hey ${accountName?`${accountName},`: ''}`}
     </div>
   )
 }

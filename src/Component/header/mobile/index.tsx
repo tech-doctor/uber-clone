@@ -13,6 +13,8 @@ const MobileHeader:React.FC = () => {
     setShowSideBar(!showSideBar);
  }
 
+
+ 
   return(
     <div className='sm:hidden'>
     <MobileNav className='fixed z-10 top-0 left-0'>

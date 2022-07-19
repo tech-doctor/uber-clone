@@ -21,13 +21,7 @@ const  App:React.FC = () => {
 
     // Detects if device is in standalone mode
     // const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
-
-    function isInStandaloneMode() {
-    return (window.matchMedia('(display-mode: standalone)').matches);
-  }
-
-
-
+   
     // Checks if should display install popup notification:
 
     // if (isIos() && !isInStandaloneMode()) {
@@ -35,17 +29,31 @@ const  App:React.FC = () => {
     // }
 
 
+    function isInStandaloneMode() {
+    return (window.matchMedia('(display-mode: standalone)').matches);
+  }
+
+
+
+    
+
+    const userName = localStorage.getItem('userName');
+     //console.log(userName)
+    if(!userName){
+      return <Auth/>
+    }
+
   return (
     <div>
       <Router>
           <Switch>
-            <Route exact path="/auth" component={Auth} />
-            <ProtectedRoute exact path = "/" component={Home}/>
-            <ProtectedRoute exact path = "/pick/:origin" component={Pick}/>
+            {/* <Route exact path="/auth" component={Auth} /> */}
+            <Route exact path = "/" component={Home}/>
+            <Route exact path = "/pick/:origin" component={Pick}/>
             <ErrorBoundary
               FallbackComponent={ErrorFallback}
             >
-            <ProtectedRoute exact path = "/drop/:origin/:end" component = {Drop}/>
+            <Route exact path = "/drop/:origin/:end" component = {Drop}/>
             </ErrorBoundary>
             <Route exact path = "*" component = {NoPage}/>
           </Switch>

@@ -6,15 +6,15 @@ import { FacebookSVG, LogoSVG, GoogleSVG } from "../../Component/const/svg";
 const Auth = () => {
   const auth = getAuth(app);
   const [isError, setIsError] = useState(false)
-  const [isAuthorised, setIsAuthorised] = useState(false)
+  //const [isAuthorised, setIsAuthorised] = useState(false)
 
 
-  useEffect(() => {
-     const userName = localStorage.getItem('userName');
-      if (userName) {
-        window.location.href = "/";
-      }
-    },[isAuthorised]);
+  // useEffect(() => {
+  //    const userName = localStorage.getItem('userName');
+  //     if (userName) {
+  //       window.location.href = "/";
+  //     }
+  //   },[isAuthorised]);
 
   const signInWithGoogle = () => {
      const provider = new GoogleAuthProvider();
@@ -24,7 +24,9 @@ const Auth = () => {
       console.log(name);
       if(name){
         localStorage.setItem('userName', name)
-        setIsAuthorised(true)
+        //setIsAuthorised(true)
+        window.location.reload()
+        
       }
 
      }).catch((error) => {
@@ -48,7 +50,9 @@ const Auth = () => {
          console.log(name);
          if(name){
           localStorage.setItem('userName', name)
-         setIsAuthorised(true)
+         //setIsAuthorised(true)
+         window.location.reload()
+
         }
          }
      ).catch((error) => {
