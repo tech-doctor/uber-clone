@@ -117,7 +117,7 @@ const [browserSupported, setBrowserSupported] = useState(false);
     const currentLocation = data.results[0]?.formatted_address;
     dispatch(updatePickup(currentLocation));
     dispatch(updatePickupDisable(true));
-    console.log(data);
+    //console.log(data);
     history.push(`/pick/${currentLocation}`);
   }
   

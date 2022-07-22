@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {ErrorBoundary} from 'react-error-boundary';
 import ErrorFallback from './Component/ErrorFallBack';
-import ProtectedRoute from './Component/ProtectedRoute';
 import Home from './Pages/home';
 import Pick from './Pages/pick';
 import Drop from './Pages/drop';
@@ -38,7 +37,6 @@ const  App:React.FC = () => {
     
 
     const userName = localStorage.getItem('userName');
-     //console.log(userName)
     if(!userName){
       return <Auth/>
     }
@@ -47,7 +45,6 @@ const  App:React.FC = () => {
     <div>
       <Router>
           <Switch>
-            {/* <Route exact path="/auth" component={Auth} /> */}
             <Route exact path = "/" component={Home}/>
             <Route exact path = "/pick/:origin" component={Pick}/>
             <ErrorBoundary

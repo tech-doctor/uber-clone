@@ -31,14 +31,9 @@ const Auth = () => {
 
      }).catch((error) => {
        console.log(error);
-       setIsError(true)
-       const errorCode = error.code;
-       const errorMessage = error.message;
-       // The email of the user's account used.
-       const email = error.customData.email;
-       // The AuthCredential type that was used.
-       const credential = GoogleAuthProvider.credentialFromError(error);
-       // ...
+       if(!error.code && !error.message && !error.customData){
+         setIsError(true)
+      }
      });
   }
  
@@ -50,21 +45,14 @@ const Auth = () => {
          console.log(name);
          if(name){
           localStorage.setItem('userName', name)
-         //setIsAuthorised(true)
          window.location.reload()
-
         }
          }
      ).catch((error) => {
        console.log(error);
-       setIsError(true)
-         const errorCode = error.code;
-         const errorMessage = error.message;
-         // The email of the user's account used.
-         const email = error.customData.email;
-         // The AuthCredential type that was used.
-         const credential = FacebookAuthProvider.credentialFromError(error);
-         // ...
+       if(!error.code && !error.message && !error.customData){
+          setIsError(true)
+       }
      }
      );
  }
