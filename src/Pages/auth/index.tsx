@@ -66,21 +66,22 @@ const Auth = () => {
             {isError && <div className="error_message w-[90%] sm:w-[400px] mx-auto bg-red-100 py-3 text-center">
             Something went wrong. Please try again!.
           </div>}
-            <div
-            onClick={signInWithFacebook}
-             className="facebook cursor-pointer flex items-center w-[90%] sm:w-[400px] mx-auto px-3 py-3 border border-solid border-black my-3 hover:bg-gray-50">
-              <FacebookSVG/>
-              <button className="text-center w-full text-md font-bold" >Continue with Facebook
-              </button>
-            </div>
             <div 
-             onClick={signInWithGoogle}
-            className="google flex cursor-pointer items-center w-[90%] sm:w-[400px] mx-auto px-3 py-3 border border-solid border-black my-3 hover:bg-gray-50">
+              onClick={signInWithGoogle}
+              className="google flex cursor-pointer justify-center w-[90%] sm:w-[400px] mx-auto px-3 py-3  my-3 hover:bg-gray-200 font-[Arial] bg-gray-100 rounded-lg">
               <GoogleSVG/>
               <button
-              className="text-center w-full text-md font-bold"
+              className="text-center text-md font-semibold ml-3"
               >Continue with Google</button>
             </div>
+            <div
+            onClick={signInWithFacebook}
+             className="facebook cursor-pointer flex justify-center w-[90%] sm:w-[400px] mx-auto px-3 py-3 my-3 hover:bg-gray-200 font-[Arial] bg-gray-100 rounded-lg">
+              <FacebookSVG/>
+              <button className="text-center ml-3 text-md font-semibold" >Continue with Facebook
+              </button>
+            </div>
+            
           </section>
         </div>
     );
