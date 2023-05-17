@@ -31,7 +31,7 @@
 
 
 ### Display: 
-![Display](https://res.cloudinary.com/rririsrisurisux/image/upload/v1654587091/Screenshot_52_f3cf6n.png)
+![Display](https://res.cloudinary.com/rririsrisurisux/image/upload/v1658500199/uber_ltuphy.gif)
 
 
 ### Live Demo
